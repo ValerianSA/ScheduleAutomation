@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ScheduleAutomation.tblSession>
+
+
+@{
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    ViewBag.Title = "Sessions";
+}
+    <div class="container">
+
+        <div class="create">
+            <h1 class="display-4">All Sessions</h1>
+            <a href="@Url.Action("Create","Session")" class="btn btn-primary"><br />Create Session</a>
+        </div>
+        <div class="table-responsive">
+            <h1 class="display-4">List of sessions</h1>
+            <table class="table  table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.sessionCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.sessionName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblCours.CourseCode)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.sessionCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.sessionName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndTime)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.tblCours.CourseCode)*@
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.SessionID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.SessionID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.SessionID })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>

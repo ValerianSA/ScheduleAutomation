@@ -1,0 +1,463 @@
+﻿
+
+
+/*total hours for session
+course type
+instructor only data - where instructor has only what they have on their calendar to work not all on one calendar
+admin only section - where admins see just their stuff in tables what they need to work and all
+all Form validations
+
+*/
+
+body {
+    padding-top: 40px;
+    padding-bottom: 20px;
+    height: 100%;
+    margin-top:-40px;
+}
+
+.bodyContent{
+    margin-top: 40px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/*Sidebar Styles*/
+.sidebar {
+    background-color: #4d4d4d;
+    padding: 0;
+    left:0;
+    z-index:1;
+    height:100%;
+    width: 0px;
+    position:fixed;
+    overflow: auto;
+}
+
+.sidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    display: block;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    color: #f1f1f1;
+    outline:none;
+    text-decoration:none;
+}
+
+.sidebar a:active {
+    background-color: #3067db;
+    color: white;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    display: block;
+    outline:none;
+}
+
+.Sidebarlink{
+    margin-top: 10px;
+    width: 100%;
+    /*border-bottom: 1px solid lightgray;*/
+}
+
+.Sidebarlink:hover {
+    background-color: #154a94;
+}
+
+#navstylelinks{
+    list-style-type: none;
+    margin:0;
+    padding:0;
+}
+
+#navstylelinks li {
+    display: inline;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.SidebarOpen {
+    background-color: transparent;
+    float: left;
+    color: white;
+    height: 30px;
+    width: 30px;
+    border: none;
+    border-radius: 50px;
+    margin-top: -3px;
+}
+
+.SidebarOpen:focus, .SidebarOpen:hover {
+    outline: none;
+}
+
+
+
+
+/*Navbar Styles*/
+#HomeIcon {
+    float: left;
+    color: white;
+    width: 30px;
+    height: 30px;
+}
+
+#HomeIcon:hover {
+    color: lightgray;
+}
+
+.fa-home{
+    margin-left: 3px;
+    margin-top: -2px;
+    font-size: 19px;
+}
+
+.myNavbar {
+    margin: 0;
+    padding-top: 0;
+    position: relative;
+    background-color: #154a94 !important;
+    width: 100%;
+    height: 40px;
+    color: white;
+    margin-top:-40px;
+    z-index:1;
+}
+
+.navbarHeader{
+    position:fixed;
+    width: 100%;
+    height: 40px;
+    margin:0;
+    padding:0;
+    margin-bottom: 10px;
+    z-index:1;
+}
+
+
+/*Create section Styles*/
+.createbtn {
+    width: 100px;
+    height: 40px;
+    background-color: #154a94;
+    transition:0.3s;
+    color:white;
+}
+
+.createbtn:hover {
+    background-color: #fff;
+    color: #154a94;
+    border-color: #154a94;
+    transition: 0.3s;
+}
+
+    .createbtn:active {
+        background-color: lawngreen;
+        color: #fff;
+        border-color: #154a94;
+        transition: 0.3s;
+    }
+
+
+/*table Styles*/
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+    .EmpList, .RoleList {
+        float: none;
+        width: auto;
+    }
+}
+
+
+
+/*EMPLOYEE AND ROLE VIEW STYLES*/
+
+.empDetailHeader, .empDelHeader, .empCreateHeader {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.roleEditHeader, .roleDelHeader, .roleCreateHeader {
+    margin-top: 30px;
+}
+
+.create h1{
+    font-size: 50px;
+    margin-top: 30px;
+    /*margin-bottom: 20px;*/
+}
+
+.EmpList h1{
+    font-size: 40px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.RoleList h1 {
+    font-size: 40px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.tblRole{
+    margin: auto;
+    text-align: center;
+    width: 70%;
+}
+
+#EmpEditForm h1 {
+    font-size: 20px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.returnBtn{
+    margin-top: 20px;
+}
+
+
+/*Courses css styles*/
+
+.courseEditHeader, .courseDetailsHeader, .courseDelHeader, .courseCreateHeader {
+    margin-top: 40px;
+}
+
+.addCourse {
+    text-align: center;
+    width: 120px;
+    height: 100px;
+    background-color: white;
+    border: solid 1px #154a94;
+    transition: 0.3s;
+    color: #154a94;
+    margin-top: 20px;
+}
+
+.addCourseimg{
+    width:50px;
+    height:50px;
+    margin-top:5px;
+}
+
+.addCourse:hover {
+    background-color: lightgrey;
+    border: solid 1px lightgrey;
+    color: #154a94;
+    transition: 0.3s;
+}
+
+
+/*Calendar css styles*/
+
+#monthLabel{
+    width: 200px;
+}
+
+.myCalendar {
+    max-width: 100%;
+    left: 0;
+}
+
+.container {
+    /*    background-color: green;
+*/ position: absolute;
+    max-width: 100% !important;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.currentMonthLabel {
+    width: 100%;
+    margin-bottom: 80px;
+    padding: 1px;
+}
+
+.currentMonthLabel button {
+    text-align: center;
+    float: left;
+    background-color: #154a94 !important;
+    width: 150px;
+    height: 40px;
+    margin-top: 10px;
+
+}
+
+.currentMonthLabel h1 {
+    text-align: center;
+    float: left;
+    width: 20%;
+    height: 40px;
+}
+
+
+
+
+
+/*calendar div styles to make it look like a table*/
+.rTable {
+    display: table;
+    width: 100%;
+    border: 1px solid #999999;
+}
+
+.rTableRow {
+    display: table-row;
+    border: 1px solid black;
+}
+
+.rTableHeading {
+    display: table-header-group;
+    background-color: #154a94;
+    color: white;
+}
+
+.rTableCell, .rTableHead {
+    display: table-cell;
+    padding: 3px 10px;
+    border: 1px solid #999999;
+}
+
+.rTableHeading {
+    display: table-header-group;
+    background-color: #154a94;
+    color: white;
+    font-weight: bold;
+}
+
+.rTableFoot {
+    display: table-footer-group;
+    font-weight: bold;
+    background-color: #ddd;
+}
+
+.rTableBody {
+    display: table-row-group;
+}
+
+
+
+
+
+.instructortblHead {
+    height: 10px;
+    padding: 10px 10px;
+    text-align: center;
+    border: 1px solid #999999;
+    background-color: #154a94;
+    color: #fff;
+    z-index: 0;
+    width: 100px;
+    min-width: 100px;
+    left: 0px;
+}
+
+.calendarDatesRow {
+    height: 5px;
+    padding: 10px 10px;
+    text-align: center;
+    border: 1px solid #999999;
+    background-color: #154a94;
+    color: #fff;
+    z-index: 0;
+    width: 200px;
+    min-width: 100px;
+    left: 0px;
+}
+
+
+#instructorNamesCol {
+    width: 50px;
+    height: 100px;
+    padding: 3px 10px;
+    text-align: center;
+}
+
+.instructorName {
+    position: relative;
+    /*width: 100%;*/
+    height: 100px;
+    padding: 35px 5px;
+    text-align: center;
+    border: 1px solid #999999;
+    border-top: none;
+    border-right: none;
+    background-color: #154a94;
+    color: #fff;
+    z-index: 0;
+    width: 100px;
+    min-width: 100px;
+    left: 0px;
+}
+
+.rTableCell {
+    color: #000;
+    background-color: #fff;
+    font-weight: 100;
+}
+
+
+
+
+.wrapper {
+    position: relative;
+    overflow: auto;
+    white-space: nowrap;
+    border-right: solid 1px #999999;
+}
+
+.sticky-col {
+    position: -webkit-sticky;
+    position: sticky;
+}
+
+.first-col {
+    width: 100px;
+    min-width: 100px;
+    left: 0px;
+    /*z-index:1;*/
+}
+
+.second-col {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    left: 100px;
+}
+
+
+/*Scrollbar custom css but it works only in chrome and edge not in Mozilla*/
+/*::-webkit-scrollbar {
+    width: 1em;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #154a94;
+    outline: 1px solid slategrey;
+}*/
+

@@ -1,0 +1,50 @@
+﻿@model ScheduleAutomation.tblCourses
+
+@{
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    ViewBag.Title = "Course details";
+}
+        <div class="courseDetailsHeader">
+            <h4 class="display-4">View details of this course</h4>
+            <hr />
+        </div>
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.CourseCode)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CourseCode)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CourseName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CourseType)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CourseType)
+                </dd>
+
+                <dt>
+                    Course Language
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CourseLang)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.CourseID }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>

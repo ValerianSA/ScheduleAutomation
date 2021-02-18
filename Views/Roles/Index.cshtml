@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ScheduleAutomation.tblRole>
+
+@{
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    ViewBag.Title = "Roles";
+}
+
+        <div class="create">
+            <h1 class="display-4">Role section</h1>
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+        </div>
+
+        <div class="RoleList table-responsive">
+            <h1 class="display-4">List of current user roles</h1>
+            <table class="table table-hover tblRole">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Role)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.RoleID }) |
+                                @Html.ActionLink("Delete Role", "Delete", new { id = item.RoleID })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+

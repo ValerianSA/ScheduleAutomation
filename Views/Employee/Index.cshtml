@@ -1,0 +1,125 @@
+﻿@model IEnumerable<ScheduleAutomation.tblEmployee>
+
+@{
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    ViewBag.Title = "Employees";
+
+}
+
+        <div class="create">
+            <h1 class="display-4">Employee section</h1>
+            <p>
+                <!--Add a add user icon instead of action link-->
+                @Html.ActionLink("Create New", "Create", new { @class = "createbtn btn btn-primary" })
+            </p>
+        </div>
+
+        <div class="EmpList table-responsive">
+            <h1 class="display-4">List of current users</h1>
+
+            <b>Search by:</b>
+            <select id="SearchBy">
+                <option value="Username">Username</option>
+                @*<option value="Role">Role</option>*@
+                <option value="FirstName">FirstName</option>
+                @*<option value="LastName">LastName</option>
+                <option value="EmailAddress">EmailAddress</option>*@
+            </select>
+            <br />
+            <br />
+
+            @Html.TextBox("Search")<input type="submit" id="SearchBtn" value="Search"/>
+            <br />
+            <br />
+
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Username)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EmailAddress)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblRole.Role)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="DataSearching">
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Username)
+                                @item.Username
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EmailAddress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblRole.Role)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+<script src="~/Scripts/jquery-3.5.1.min.js"></script>
+<script>
+
+    $(document).Ready(function () {
+        $("SearchBtn").click(function () {
+        alert("Entered js");
+            var SearchBy = $("#SearchBy").val();
+            var SearchValue = $("#Search").val();
+            var SetData = $("#DataSearching");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/Employee/GetSearchingData?SearchBy=" + SearchBy + "&SearchValue=" + SearchValue,
+                contentType: "html",
+                success: function (result) {
+                    if (result.length == 0) {
+                        SetData.Append('<tr style="color:red;"><td colspan="3">Data does not contain search value</td></tr>')
+                    }
+                    else {
+                        $.each(result, function (index, value) {
+                            var Data = "<tr>" +
+                                "<td>" + value.Username + "</td>" +
+                                "<td>" + value.FirstName + "</td>" +
+                                "<td>" + value.LastName + "</td>" +
+                                "<td>" + value.EmailAddress + "</td>" +
+                                "<td>" + value.tblRole.Role + "</td>" +
+                                "</tr>";
+                            SetData.Append(Data);
+                        });
+                        alert("at the end");
+                    }
+                }
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ScheduleAutomation.tblCourses>
+
+@{
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    ViewBag.Title = "Courses";
+}
+
+
+        <div class="create">
+            <h1 class="display-4">Course section</h1>
+            <a href="@Url.Action("Create","Course")" class="btn AddCourse"><img src="~/Content/Images/addCourse.png" class="addCourseimg" /><br />Add Course</a>
+        </div>
+        <div class="RoleList table-responsive">
+            <h1 class="display-4">List of courses</h1>
+            <table class="table  table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            Course Code
+                        </th>
+                        <th>
+                            Course Name
+                        </th>
+                        <th>
+                            Course Type
+                        </th>
+                        <th>
+                            Course Language
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseLang)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.CourseID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.CourseID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.CourseID }) | 
+                            @Html.ActionLink("Sessions", "Session", new { id = item.CourseID })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+

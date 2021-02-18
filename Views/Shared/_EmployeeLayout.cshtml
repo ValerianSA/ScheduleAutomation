@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.title</title>
+    <link type="image/x-icon" rel="icon" href="~/Content/Images/CerLogo.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/Site.css" type="text/css"/>
+    <script type="text/javascript" src="~/Scripts/Script.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+
+
+        @* Navbar code *@
+        <div id="header" class="navbarHeader">
+            <nav class="myNavbar navbar navbar-static-top">
+                <div class="navbar-nav">
+                    <ul id="navstylelinks">
+                        <li>
+                            <button id="SidebarOpen" class="SidebarOpen" onclick="openNav()">
+                                <span>
+                                    <i id="sidebarRgt" class="fa fa-bars"></i>
+                                </span>
+                            </button>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("index","Home")" id="HomeIcon"><i class="fa fa-fw fa-home"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        @* Sidebar code *@
+        <div id="mySidebar" class="sidebar">
+            <a href="@Url.Action("index","Calendar")" class="Sidebarlink">Home</a>
+            <a href="@Url.Action("index","Employee")" class="Sidebarlink">Employees</a>
+            <a href="@Url.Action("index","Roles")" class="Sidebarlink">Roles</a>
+            <a href="@Url.Action("index","Course")" class="Sidebarlink">Courses</a>
+            <a href="@Url.Action("index","Session")" class="Sidebarlink">Sessions</a>
+
+        </div>
+
+    <div class="container container-fluid">
+        
+        @RenderBody()
+
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

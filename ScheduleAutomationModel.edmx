@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ScheduleAutomationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblCourses">
+          <Key>
+            <PropertyRef Name="CourseID" />
+          </Key>
+          <Property Name="CourseID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CourseCode" Type="varchar" MaxLength="50" />
+          <Property Name="CourseName" Type="varchar" MaxLength="200" />
+          <Property Name="CourseType" Type="varchar" MaxLength="50" />
+          <Property Name="CourseLang" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblEmployees">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="50" />
+          <Property Name="RoleID" Type="int" />
+        </EntityType>
+        <EntityType Name="tblRoles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblSession">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="sessionCode" Type="varchar" MaxLength="256" />
+          <Property Name="sessionName" Type="varchar" MaxLength="256" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="CourseID" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="tblSessionEmpLink">
+          <Key>
+            <PropertyRef Name="empID" />
+            <PropertyRef Name="sessionID" />
+          </Key>
+          <Property Name="empID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="sessionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="typeOfParticipation" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__tblEmploy__RoleI__267ABA7A">
+          <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="0..1" />
+          <End Role="tblEmployees" Type="Self.tblEmployees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="tblEmployees">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblSessio__Cours__3A81B327">
+          <End Role="tblCourses" Type="Self.tblCourses" Multiplicity="0..1" />
+          <End Role="tblSession" Type="Self.tblSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCourses">
+              <PropertyRef Name="CourseID" />
+            </Principal>
+            <Dependent Role="tblSession">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSessionEmpLink_tblEmployees">
+          <End Role="tblEmployees" Type="Self.tblEmployees" Multiplicity="1" />
+          <End Role="tblSessionEmpLink" Type="Self.tblSessionEmpLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmployees">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblSessionEmpLink">
+              <PropertyRef Name="empID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSessionEmpLink_tblSession">
+          <End Role="tblSession" Type="Self.tblSession" Multiplicity="1" />
+          <End Role="tblSessionEmpLink" Type="Self.tblSessionEmpLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSession">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="tblSessionEmpLink">
+              <PropertyRef Name="sessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ScheduleAutomationModelStoreContainer">
+          <EntitySet Name="tblCourses" EntityType="Self.tblCourses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblEmployees" EntityType="Self.tblEmployees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSession" EntityType="Self.tblSession" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSessionEmpLink" EntityType="Self.tblSessionEmpLink" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tblEmploy__RoleI__267ABA7A" Association="Self.FK__tblEmploy__RoleI__267ABA7A">
+            <End Role="tblRoles" EntitySet="tblRoles" />
+            <End Role="tblEmployees" EntitySet="tblEmployees" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblSessio__Cours__3A81B327" Association="Self.FK__tblSessio__Cours__3A81B327">
+            <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblSession" EntitySet="tblSession" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSessionEmpLink_tblEmployees" Association="Self.FK_tblSessionEmpLink_tblEmployees">
+            <End Role="tblEmployees" EntitySet="tblEmployees" />
+            <End Role="tblSessionEmpLink" EntitySet="tblSessionEmpLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSessionEmpLink_tblSession" Association="Self.FK_tblSessionEmpLink_tblSession">
+            <End Role="tblSession" EntitySet="tblSession" />
+            <End Role="tblSessionEmpLink" EntitySet="tblSessionEmpLink" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ScheduleAutomationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RoleID" Type="Int32" />
+          <NavigationProperty Name="tblRole" Relationship="Self.FK__tblEmploy__RoleI__267ABA7A" FromRole="tblEmployees" ToRole="tblRoles" />
+          <NavigationProperty Name="tblSessionEmpLinks" Relationship="ScheduleAutomationModel.FK_tblSessionEmpLink_tblEmployees" FromRole="tblEmployee" ToRole="tblSessionEmpLink" />
+        </EntityType>
+        <EntityType Name="tblRole">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblEmployees" Relationship="Self.FK__tblEmploy__RoleI__267ABA7A" FromRole="tblRoles" ToRole="tblEmployees" />
+        </EntityType>
+        <Association Name="FK__tblEmploy__RoleI__267ABA7A">
+          <End Role="tblRoles" Type="ScheduleAutomationModel.tblRole" Multiplicity="0..1" />
+          <End Role="tblEmployees" Type="ScheduleAutomationModel.tblEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="tblEmployees">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ScheduleAutomationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblEmployees" EntityType="ScheduleAutomationModel.tblEmployee" />
+          <EntitySet Name="tblRoles" EntityType="ScheduleAutomationModel.tblRole" />
+          <AssociationSet Name="FK__tblEmploy__RoleI__267ABA7A" Association="Self.FK__tblEmploy__RoleI__267ABA7A">
+            <End Role="tblRoles" EntitySet="tblRoles" />
+            <End Role="tblEmployees" EntitySet="tblEmployees" />
+          </AssociationSet>
+          <EntitySet Name="tblCourses" EntityType="ScheduleAutomationModel.tblCourses" />
+          <EntitySet Name="tblSessions" EntityType="ScheduleAutomationModel.tblSession" />
+          <AssociationSet Name="FK__tblSessio__Cours__3A81B327" Association="ScheduleAutomationModel.FK__tblSessio__Cours__3A81B327">
+            <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblSession" EntitySet="tblSessions" />
+          </AssociationSet>
+          <EntitySet Name="tblSessionEmpLinks" EntityType="ScheduleAutomationModel.tblSessionEmpLink" />
+          <AssociationSet Name="FK_tblSessionEmpLink_tblEmployees" Association="ScheduleAutomationModel.FK_tblSessionEmpLink_tblEmployees">
+            <End Role="tblEmployee" EntitySet="tblEmployees" />
+            <End Role="tblSessionEmpLink" EntitySet="tblSessionEmpLinks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSessionEmpLink_tblSession" Association="ScheduleAutomationModel.FK_tblSessionEmpLink_tblSession">
+            <End Role="tblSession" EntitySet="tblSessions" />
+            <End Role="tblSessionEmpLink" EntitySet="tblSessionEmpLinks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblCourses">
+          <Key>
+            <PropertyRef Name="CourseID" />
+          </Key>
+          <Property Name="CourseID" Type="Guid" Nullable="false" />
+          <Property Name="CourseCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CourseName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CourseType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CourseLang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblSessions" Relationship="ScheduleAutomationModel.FK__tblSessio__Cours__3A81B327" FromRole="tblCourses" ToRole="tblSession" />
+        </EntityType>
+        <EntityType Name="tblSession">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="Guid" Nullable="false" />
+          <Property Name="sessionCode" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="sessionName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="CourseID" Type="Guid" />
+          <NavigationProperty Name="tblCours" Relationship="ScheduleAutomationModel.FK__tblSessio__Cours__3A81B327" FromRole="tblSession" ToRole="tblCourses" />
+          <NavigationProperty Name="tblSessionEmpLinks" Relationship="ScheduleAutomationModel.FK_tblSessionEmpLink_tblSession" FromRole="tblSession" ToRole="tblSessionEmpLink" />
+        </EntityType>
+        <Association Name="FK__tblSessio__Cours__3A81B327">
+          <End Type="ScheduleAutomationModel.tblCourses" Role="tblCourses" Multiplicity="0..1" />
+          <End Type="ScheduleAutomationModel.tblSession" Role="tblSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCourses">
+              <PropertyRef Name="CourseID" />
+            </Principal>
+            <Dependent Role="tblSession">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblSessionEmpLink">
+          <Key>
+            <PropertyRef Name="empID" />
+            <PropertyRef Name="sessionID" />
+          </Key>
+          <Property Name="empID" Type="Guid" Nullable="false" />
+          <Property Name="sessionID" Type="Guid" Nullable="false" />
+          <Property Name="typeOfParticipation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblEmployee" Relationship="ScheduleAutomationModel.FK_tblSessionEmpLink_tblEmployees" FromRole="tblSessionEmpLink" ToRole="tblEmployee" />
+          <NavigationProperty Name="tblSession" Relationship="ScheduleAutomationModel.FK_tblSessionEmpLink_tblSession" FromRole="tblSessionEmpLink" ToRole="tblSession" />
+        </EntityType>
+        <Association Name="FK_tblSessionEmpLink_tblEmployees">
+          <End Type="ScheduleAutomationModel.tblEmployee" Role="tblEmployee" Multiplicity="1" />
+          <End Type="ScheduleAutomationModel.tblSessionEmpLink" Role="tblSessionEmpLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmployee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblSessionEmpLink">
+              <PropertyRef Name="empID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSessionEmpLink_tblSession">
+          <End Type="ScheduleAutomationModel.tblSession" Role="tblSession" Multiplicity="1" />
+          <End Type="ScheduleAutomationModel.tblSessionEmpLink" Role="tblSessionEmpLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSession">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="tblSessionEmpLink">
+              <PropertyRef Name="sessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ScheduleAutomationModelStoreContainer" CdmEntityContainer="ScheduleAutomationEntities">
+          <EntitySetMapping Name="tblEmployees">
+            <EntityTypeMapping TypeName="ScheduleAutomationModel.tblEmployee">
+              <MappingFragment StoreEntitySet="tblEmployees">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRoles">
+            <EntityTypeMapping TypeName="ScheduleAutomationModel.tblRole">
+              <MappingFragment StoreEntitySet="tblRoles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCourses">
+            <EntityTypeMapping TypeName="ScheduleAutomationModel.tblCourses">
+              <MappingFragment StoreEntitySet="tblCourses">
+                <ScalarProperty Name="CourseLang" ColumnName="CourseLang" />
+                <ScalarProperty Name="CourseType" ColumnName="CourseType" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="CourseCode" ColumnName="CourseCode" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSessions">
+            <EntityTypeMapping TypeName="ScheduleAutomationModel.tblSession">
+              <MappingFragment StoreEntitySet="tblSession">
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="sessionName" ColumnName="sessionName" />
+                <ScalarProperty Name="sessionCode" ColumnName="sessionCode" />
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSessionEmpLinks">
+            <EntityTypeMapping TypeName="ScheduleAutomationModel.tblSessionEmpLink">
+              <MappingFragment StoreEntitySet="tblSessionEmpLink">
+                <ScalarProperty Name="typeOfParticipation" ColumnName="typeOfParticipation" />
+                <ScalarProperty Name="sessionID" ColumnName="sessionID" />
+                <ScalarProperty Name="empID" ColumnName="empID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
