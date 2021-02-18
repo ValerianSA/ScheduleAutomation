@@ -27,4 +27,16 @@ namespace ScheduleAutomation.Models
         public string EmailAddress { get; set; }
 
     }
+
+
+    public class EmployeeWithSessionViewModel: tblEmployeeModel
+    {
+        public Guid EmployeeId { get; set; }
+        public Guid SessionId { get; set; }
+        public string TypeOfParticipation { get; set; }
+
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+
+    }
 }
