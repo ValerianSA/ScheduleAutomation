@@ -19,35 +19,86 @@
 <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
 
+<script>
+
+    $('#myModal').modal('show');
+
+</script>
+
+
+<!--Modal starts here-->
 
 
 
 
-@*<div class="container" style="margin-top: 40px;">
-        <table class="table">
+<div id="CalModal"class="modal fade " tabindex="-1" role="dialog">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content modalAdd">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Session</label>
+                            <select id="sessionList">
 
-            <thead>
-                <tr>
-                    <th>Instructors</th>
-                    <th>something1</th>
-                    <th>something2</th>
-                    <th>something3</th>
-                    <th>something4</th>
-                    <th>something5</th>
-                    <th>something6</th>
-                    <th>something7</th>
-                </tr>
-            </thead>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">field name</label>
+                            <input type="text" class="form-control" name="lname" id="lname">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Instructor</label>
+                            <input type="text" class="form-control" name="instructor" id="instructor">
+                        </div>
+                    </div>
 
-            <tbody id="SetCalendar">
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="form-group">
+                            <label class="control-label">Start Time</label>
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='datetime' id="startTimetxt" class="form-control" />
+                                <span class="input-group-addon">
+                                    <button class="glyphicon glyphicon-calendar"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="form-group">
+                            <label class="control-label">End Time</label>
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='datetime' id="endTimetxt" class="form-control" />
+                                <span class="input-group-addon">
+                                    <button class="glyphicon glyphicon-calendar"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAdd" class="btn btn-success" data-dismiss="modal">Add</button>
+                <button type="button" id="btnClose" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <tr id="LoadingStatus" style="color:red;"></tr>
-
-
-            </tbody>
-
-        </table>
-    </div>*@
 
 
 
@@ -59,6 +110,23 @@
 
 
 
+
+
+
+
+@{ // responsible for getting the first and last days of the month
+    var getDate = DateTime.Now;
+    var todayNumb = Convert.ToInt16(getDate.ToString("dd"));
+
+    var firstDayOfTheMonth = new DateTime(getDate.Year, getDate.Month, 1);
+    var firstWeekNow = Convert.ToInt16(getDate.ToString("dd")) + 7;
+    var lastDayOfTheMonth = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+    var firstWeek = Convert.ToInt16(firstDayOfTheMonth.ToString("dd")) + 7;
+
+    var numberOfDays = Convert.ToInt16(lastDayOfTheMonth.ToString("dd"));
+
+    var currentMonth = DateTime.Now.ToString("MMMM");
+}
 
 
 
@@ -84,19 +152,6 @@
 </div>
 
 
-@{ // responsible for getting the first and last days of the month
-    var getDate = DateTime.Now;
-    var todayNumb = Convert.ToInt16(getDate.ToString("dd"));
-
-    var firstDayOfTheMonth = new DateTime(getDate.Year, getDate.Month, 1);
-    var firstWeekNow = Convert.ToInt16(getDate.ToString("dd")) + 7;
-    var lastDayOfTheMonth = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
-    var firstWeek = Convert.ToInt16(firstDayOfTheMonth.ToString("dd")) + 7;
-
-    var numberOfDays = Convert.ToInt16(lastDayOfTheMonth.ToString("dd"));
-
-    var currentMonth = DateTime.Now.ToString("MMMM");
-}
 
 
 
@@ -105,146 +160,79 @@
 <br />
 <br />
 
-
+<p id="testingAjax"></p>
 
 <div class="myCalendar">
     <div class="currentMonthLabel">
         <button class="btn btn-block btn-danger">previous month</button>
         <h1 id="monthLabel">@currentMonth</h1>
         <button class="btn btn-block btn-primary">next month</button>
-        </div>
-        <div class="wrapper">
+        <button class="modalbtn btn-block" type="button" data-toggle="modal" data-target="#CalModal"><img src="~/Content/Images/plus.png" id="plusSign" title="Add a session" onclick="getInstructorSessions()"/> Add a session</button>
+    </div>
+    <div class="wrapper">
         <div class="rTable">
             <div class="rTableHeading">
                 <div class="rTableRow">
                     <div class="rTableHead instructortblHead sticky-col first-col">
-                        Days <span>&#8614;</span>
+                        Instructors <span>&#8615;</span>
                     </div>
                     @for (var i = 1; i <= numberOfDays; i++)
                     {
-                        var mydate = $"{i} / {DateTime.Now.Month.ToString()} / {DateTime.Now.ToString("yyyy")} {firstDayOfTheMonth.AddDays(i)}"; //+" 12:00:00 AM"
+                        var mydate = $"{i} / {DateTime.Now.Month.ToString()} / {DateTime.Now.ToString("yyyy")}"; //+" 12:00:00 AM"
 
-                    <div class="rTableHead calendarDatesRow">@mydate</div>
+                        <div class="rTableHead calendarDatesRow">@mydate</div>
                     }
                 </div>
 
-                }
+                @*<div class="rTableRow" id="instructorNamesCol">
 
+                        <div class="rTableHead instructortblHead sticky-col first-col">
+                            Instructors<br /><span>&#8615;</span>
+                        </div>
 
-                <div class="rTableRow" id="instructorNamesCol">
-
-                    <div class="rTableHead instructortblHead sticky-col first-col">
-                        Instructors<br /><span>&#8615;</span>
-                    </div>
-
-                    @for (var i = 1; i <= numberOfDays; i++)
-                    {
-                    <div class="rTableHead calendarDatesRow">@i</div>
-                    }
-
-                </div>
-
-                @*.Where(x => x.tblRole.Role.ToLower().Equals(role))*@
-                @{
-                        var role = "instructor";
-                    for (var i = 0; i < numberOfDays; i++)
-
+                        @for (var i = 1; i <= numberOfDays; i++)
                         {
+                            <div class="rTableHead calendarDatesRow">@i</div>
+                        }
 
-                            var currentDate = firstDayOfTheMonth.AddDays(i);
+                    </div>*@
 
+                @foreach (var emp in Model)
+                {
                     <div class="rTableRow" id="instructorNamesCol">
                         <div class="rTableHead instructorName sticky-col first-col">
-
-                            foreach (var item in Model)
-                            @*@Html.DisplayFor(modelItem => item.tblEmployee.FirstName)
-                    @Html.DisplayFor(modelItem => item.tblEmployee.LastName)*@
-
-
+                            @emp.Value.First().FirstName
+                            @emp.Value.First().LastName
                         </div>
-                        @for (var i = 1; i <= numberOfDays; i++)
-                            {
+                        @for (var i = 0; i < numberOfDays; i++)
+                        {
+                            var currentDate = firstDayOfTheMonth.AddDays(i);
+                            <div class="rTableCell">
+                                @{var sessionsForDay = emp.Value.Where(z => (z.StartTime > currentDate && z.StartTime < currentDate.AddDays(1).AddTicks(-1)) || (z.EndTime > currentDate && z.EndTime < currentDate.AddDays(1).AddTicks(-1))).ToList();
 
-                        <div class="rTableCell">
-                            @*@Html.DisplayFor(modelItem => item.tblSessionEmpLink.typeOfParticipation)*@
-                        </div>
-                            }
 
+                                    if (sessionsForDay != null && sessionsForDay.Any())
+                                    {
+                                        <p>@emp.Value.First().sessionName</p>
+                                        <p><strong>Starts at </strong>@emp.Value.First().StartTime.ToString("t")</p>
+                                        <p><strong>Ends at </strong>@emp.Value.First().EndTime.ToString("t")</p>
+                                        foreach (var session in sessionsForDay.Select(s => s.TypeOfParticipation).ToList())
+                                        {
+                                            <p><strong>Role: </strong>@session</p>
+                                        }<br />
+                                    }
+                                }
+                            </div>
+                        }
                     </div>
-                    }
                 }
             </div>
         </div>
-        </div>
-        </div>
+    </div>
+</div>
 
 
+<br />
+<br />
+<br />
 
-        <br />
-        <br />
-        <br />
-
-
-        <!----------------------------------------------------------------------------------------------------------->
-        @*<div class="myCalendar">
-                <div class="currentMonthLabel">
-                    <button class="btn btn-block btn-danger">previous month</button>
-                    <h1>@currentMonth</h1>
-                    <button class="btn btn-block btn-primary">next month</button>
-                </div>
-                <div class="wrapper">
-                    <div class="rTable">
-                        <div class="rTableHeading">
-                            <div class="rTableRow">
-                                <div class="rTableHead instructortblHead sticky-col first-col">Days</div>
-                                @for (var i = 1; i <= numberOfDays; i++)
-                                {
-
-                                    var mydate = i + "/" + DateTime.Now.Month.ToString() + "/" + DateTime.Now.ToString("yyyy") + " 00:00:00";
-                                    <div class="rTableHead calendarDatesRow">@mydate.ToString()</div>
-                                }
-                            </div>
-
-
-
-                            <div class="rTableRow" id="instructorNamesCol">
-
-                                <div class="rTableHead instructortblHead sticky-col first-col">Instructors</div>
-
-                                @for (var i = 1; i <= numberOfDays; i++)
-                                {
-                                    <div class="rTableHead calendarDatesRow">@i</div>
-                                }
-
-                            </div>
-
-
-                            @{
-                                var role = "instructor";
-                                foreach (var item in Model.Where(x => x.tblRole.Role.ToLower().Equals(role)))
-                                {
-
-                                    <div class="rTableRow" id="instructorNamesCol">
-                                        <div class="rTableHead instructorName sticky-col first-col">
-                                            @Html.DisplayFor(modelItem => item.FirstName)
-                                            @Html.DisplayFor(modelItem => item.LastName)
-                                        </div>
-                                        @for (var i = 1; i <= numberOfDays; i++)
-                                        {
-
-
-
-
-                                            <div class="rTableCell">Something</div>
-                                        }
-
-                                    </div>
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-
-
-        <!----------------------------------------------------------------------------------------------------------->

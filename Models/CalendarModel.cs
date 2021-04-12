@@ -33,6 +33,7 @@ namespace ScheduleAutomation.Models
     {
         public Guid EmployeeId { get; set; }
         public Guid SessionId { get; set; }
+        public string sessionName { get; set; }
         public string TypeOfParticipation { get; set; }
 
         public DateTime StartTime { get; set; }
