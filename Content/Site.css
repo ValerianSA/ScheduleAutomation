@@ -13,10 +13,10 @@ body {
     padding-top: 40px;
     padding-bottom: 20px;
     height: 100%;
-    margin-top:-40px;
+    margin-top: -40px;
 }
 
-.bodyContent{
+.bodyContent {
     margin-top: 40px;
 }
 
@@ -44,60 +44,61 @@ textarea {
 .sidebar {
     background-color: #4d4d4d;
     padding: 0;
-    left:0;
-    z-index:1;
-    height:100%;
+    left: 0;
+    z-index: 2;
+    height: 100%;
     width: 0px;
-    position:fixed;
+    position: fixed;
     overflow: auto;
 }
 
-.sidebar a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 15px;
-    color: white;
-    display: block;
-    transition: 0.2s;
-}
+    .sidebar a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 15px;
+        color: white;
+        display: block;
+        transition: 0.2s;
+    }
 
-.sidebar a:hover {
-    color: #f1f1f1;
-    outline:none;
-    text-decoration:none;
-}
+        .sidebar a:hover {
+            color: #f1f1f1;
+            outline: none;
+            text-decoration: none;
+        }
 
-.sidebar a:active {
-    background-color: #3067db;
-    color: white;
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 15px;
-    display: block;
-    outline:none;
-}
+        .sidebar a:active {
+            background-color: #3067db;
+            color: white;
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 15px;
+            display: block;
+            outline: none;
+        }
 
-.Sidebarlink{
+.Sidebarlink {
     margin-top: 10px;
     width: 100%;
     /*border-bottom: 1px solid lightgray;*/
 }
 
-.Sidebarlink:hover {
-    background-color: #154a94;
-}
+    .Sidebarlink:hover {
+        background-color: #154a94;
+    }
 
-#navstylelinks{
+#navstylelinks {
     list-style-type: none;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
-#navstylelinks li {
-    display: inline;
-    padding-right: 10px;
-    padding-left: 10px;
-}
+    #navstylelinks li {
+        display: inline;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
 .SidebarOpen {
     background-color: transparent;
     float: left;
@@ -109,9 +110,9 @@ textarea {
     margin-top: -3px;
 }
 
-.SidebarOpen:focus, .SidebarOpen:hover {
-    outline: none;
-}
+    .SidebarOpen:focus, .SidebarOpen:hover {
+        outline: none;
+    }
 
 
 
@@ -124,12 +125,12 @@ textarea {
     height: 30px;
 }
 
-#HomeIcon:hover {
-    color: lightgray;
-}
+    #HomeIcon:hover {
+        color: lightgray;
+    }
 
-.fa-home{
-    margin-left: 3px;
+.fa-home {
+    margin-left: 8px;
     margin-top: -2px;
     font-size: 19px;
 }
@@ -142,18 +143,18 @@ textarea {
     width: 100%;
     height: 40px;
     color: white;
-    margin-top:-40px;
-    z-index:1;
+    margin-top: -40px;
+    z-index: 1;
 }
 
-.navbarHeader{
-    position:fixed;
+.navbarHeader {
+    position: fixed;
     width: 100%;
     height: 40px;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     margin-bottom: 10px;
-    z-index:1;
+    z-index: 1;
 }
 
 
@@ -162,16 +163,16 @@ textarea {
     width: 100px;
     height: 40px;
     background-color: #154a94;
-    transition:0.3s;
-    color:white;
+    transition: 0.3s;
+    color: white;
 }
 
-.createbtn:hover {
-    background-color: #fff;
-    color: #154a94;
-    border-color: #154a94;
-    transition: 0.3s;
-}
+    .createbtn:hover {
+        background-color: #fff;
+        color: #154a94;
+        border-color: #154a94;
+        transition: 0.3s;
+    }
 
     .createbtn:active {
         background-color: lawngreen;
@@ -203,13 +204,13 @@ textarea {
     margin-top: 30px;
 }
 
-.create h1{
+.create h1 {
     font-size: 50px;
     margin-top: 30px;
     /*margin-bottom: 20px;*/
 }
 
-.EmpList h1{
+.EmpList h1 {
     font-size: 40px;
     margin-top: 30px;
     margin-bottom: 20px;
@@ -221,7 +222,7 @@ textarea {
     margin-bottom: 20px;
 }
 
-.tblRole{
+.tblRole {
     margin: auto;
     text-align: center;
     width: 70%;
@@ -233,7 +234,7 @@ textarea {
     margin-bottom: 20px;
 }
 
-.returnBtn{
+.returnBtn {
     margin-top: 20px;
 }
 
@@ -255,10 +256,10 @@ textarea {
     margin-top: 20px;
 }
 
-.addCourseimg{
-    width:50px;
-    height:50px;
-    margin-top:5px;
+.addCourseimg {
+    width: 50px;
+    height: 50px;
+    margin-top: 5px;
 }
 
 .addCourse:hover {
@@ -271,14 +272,29 @@ textarea {
 
 /*Calendar css styles*/
 
-#monthLabel{
-    width: 200px;
+.pageContent {
+    width: 100%;
+    height: 100%;
+
 }
 
+#CalModal, #cellSessionsdisplayModal {
+    zoom: 90%;
+}
+
+#monthLabel {
+    width: 300px;
+    margin:auto;
+}
+
+
 .myCalendar {
+    margin-top: 170px;
     max-width: 100%;
     left: 0;
+    zoom: 90%;
 }
+
 
 .container {
     /*    background-color: green;
@@ -290,25 +306,29 @@ textarea {
 
 .currentMonthLabel {
     width: 100%;
-    margin-bottom: 80px;
-    padding: 1px;
 }
 
-.currentMonthLabel button {
-    text-align: center;
-    float: left;
-    background-color: #154a94 !important;
-    width: 150px;
-    height: 40px;
-    margin-top: 10px;
+    .currentMonthLabel button {
+        text-align: center;
+        float: left;
+        background-color: #154a94 !important;
+        width: 150px;
+        height: 40px;
+        margin-top: 10px;
+    }
 
-}
+    .currentMonthLabel h1 {
+        text-align: center;
+        float: left;
+        width: 20%;
+    }
 
-.currentMonthLabel h1 {
+
+.sessionCountbtn {
+    border-radius: 50px !important;
+    width: 35px !important;
+    height: 35px !important;
     text-align: center;
-    float: left;
-    width: 20%;
-    height: 40px;
 }
 
 
@@ -359,6 +379,19 @@ textarea {
 
 
 
+.CalendarTitle{
+    top:10;
+    position:fixed;
+    z-index:1;
+    background-color: white;
+    width:100%;
+}
+
+.CalendarTableHeaders{
+    width:100%;
+    position:fixed;
+    z-index:1;
+}
 
 .instructortblHead {
     height: 100px;
@@ -367,8 +400,9 @@ textarea {
     border: 1px solid #999999;
     background-color: #154a94;
     color: #fff;
-    z-index: 0;
-    width: 200px;
+    z-index: 1;
+    width: 100px !important;
+    height: 100px;
 }
 
 .calendarDatesRow {
@@ -378,18 +412,20 @@ textarea {
     border: 1px solid #999999;
     background-color: #154a94;
     color: #fff;
-    z-index: 0;
+    z-index: 1;
     width: 200px;
     min-width: 100px;
-    left: 0px;
 }
 
-.modalbtn{
+
+.modalbtn {
     font-family: Helvetica, sans-serif;
     height: 50px;
     width: 120px;
     border-radius: 5px;
-    color:white;
+    color: white;
+    margin-left: 10px;
+    border: none
 }
 
 
@@ -403,6 +439,7 @@ textarea {
 .instructorName {
     position: relative;
     /*width: 100%;*/
+    width: 100px;
     height: 100px;
     padding: 80px 30px;
     text-align: center;
@@ -412,7 +449,6 @@ textarea {
     background-color: #154a94;
     color: #fff;
     z-index: 0;
-    width: 100px;
     min-width: 100px;
     left: 0px;
 }
@@ -423,6 +459,7 @@ textarea {
     font-weight: 100;
     width: 200px;
 }
+
 
 
 
@@ -439,7 +476,15 @@ textarea {
     position: sticky;
 }
 
+
 .first-col {
+    width: 100px;
+    min-width: 100px;
+    left: 0px;
+    /*z-index:1;*/
+}
+
+.first-row {
     width: 100px;
     min-width: 100px;
     left: 0px;
@@ -468,26 +513,196 @@ textarea {
     outline: 1px solid slategrey;
 }*/
 
+.sessionTableList {
+    width: 100%;
+}
+
 #plusSign {
     padding: 0;
+    height: 20px;
+    width: 20px;
+    z-index: 0;
+    margin-right: 5px;
+}
+
+.openSessionModal {
+    padding: 0;
     height: 25px;
-    width: 25px;
-    z-index:0;
+    width: 25px !important;
+    z-index: 0;
+    margin-left: 240px;
+    margin-bottom: 130px;
+    margin-top: 15px;
+}
+
+.sessionsTimeDisplay {
+    margin-top: -110px;
+    z-index: 0;
+}
+
+
+.box {
+    float: left;
+    height: 28px;
+    width: 8px;
+    margin-bottom: 15px;
+    border: 1px solid black;
+    clear: both;
 }
 
 
 
 /*Add session modal styles*/
-
-#btnAdd, #btnClose{
+#btnAdd, #btnClose {
     width: 200px;
 }
 
-#btnClose{
+#btnClose {
     margin-left: 10px;
 }
 
 
-.modalAdd{
+.modalAdd {
     width: 700px !important;
 }
+
+.sessionAddNotification {
+    font-size: 15px;
+    color: forestgreen;
+    margin-left: 400px;
+    margin-top: 5px;
+}
+
+.sessionEditNotification {
+    font-size: 18px;
+    color: greenyellow;
+    margin-left:120px;
+}
+
+.sessionAddFieldNotification {
+    font-size: 15px;
+    color: red;
+    margin-left: 350px;
+    margin-top: 5px;
+}
+
+body #cellSessionsdisplayModal .modal-dialog {
+    margin-left: 100px;
+}
+
+
+/*Session Editing Sidebar Styles*/
+#editingSidebar {
+    /*background-color: #4d4d4d;*/
+    background-color: #2158A9;
+    padding: 0;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    overflow: auto;
+}
+
+
+#editingSidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    display: block;
+    transition: 0.2s;
+}
+
+#editingSidebar a:hover {
+    color: #f1f1f1;
+    outline: none;
+    text-decoration: none;
+}
+
+#editingSidebar a:active {
+    background-color: #3067db;
+    color: white;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    display: block;
+    outline: none;
+}
+
+
+
+.editingSidebarlink {
+    margin-top: 10px;
+    width: 100%;
+    /*border-bottom: 1px solid lightgray;*/
+}
+
+.editingSidebarlink:hover {
+    background-color: #154a94;
+}
+
+
+.editingSidebarHeader{
+    color:white;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.editingSidebarlabels{
+    color: white;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.editingSidebarForm{
+    margin-top: 20px;
+}
+
+.editingSidebarFields{
+    width: 150px;
+    margin-left: 10px;
+}
+
+.btnSaveEdits, .btnClearEdits{
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+
+
+
+
+/*Administrator Views styles*/
+
+.AdminHomeTitle{
+    margin-top:20px;
+}
+
+.pendingSessionsTitle {
+    margin-top: 20px;
+}
+
+.completedSessionsTitle {
+    margin-top: 20px;
+}
+
+.listOfAdminSessions{
+    zoom:75%;
+}
+
+.pendingbtn, .completebtn {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+#newPendingsessionupdateModal {
+    zoom:85%;
+}
+
+
+
+

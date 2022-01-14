@@ -1,4 +1,25 @@
-﻿@*@model IEnumerable<ScheduleAutomation.tblEmployee>*@
+﻿<!--
+
+done - Dont close modal on add session
+done - clear fields on submit add session
+done - add a toast to show session added
+done - display the existing sessions on calendar grid
+done - separate function from document load and call with click
+done - function to call course list from add session symbol
+done - Add date picker
+done - add modal to display all sessions on the calendar for a cell
+done - Display the count of sessions on calendar cell
+done - Add an edit row for the view sessions button
+done - When click on edit button then edit sidebar is filled automatically
+done - When click on save changes, update the record in the database
+done - Admin section to see the pending sessions
+    refresh only grid to display the calendargrid info
+    Display only one session on calendar cell
+    Signals for the sessions to show what status they are on
+    see all in one go
+    dummy login
+-->
+@*@model IEnumerable<ScheduleAutomation.tblEmployee>*@
 @model SortedDictionary<Guid, List<ScheduleAutomation.Models.EmployeeWithSessionViewModel>>
 
 @*@{
@@ -12,6 +33,7 @@
 @{
     Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
     ViewBag.Title = "Calendar";
+
 }
 
 <script src="~/Scripts/jquery-3.5.1.min.js"></script>
@@ -26,86 +48,180 @@
 </script>
 
 
-<!--Modal starts here-->
 
+<!--Add session Modal starts here-->
 
-
-
-<div id="CalModal"class="modal fade " tabindex="-1" role="dialog">
+<div id="CalModal" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog " role="document">
         <div class="modal-content modalAdd">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Add a session</h5>
+                <span class="sessionAddNotification">Session saved!</span>
+                <span class="sessionAddFieldNotification">Please fill all fields</span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body ">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Session</label>
-                            <select id="sessionList">
-
-                            </select>
+            <form id="addSessionForm">
+                <div class="modal-body ">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Course</label>
+                                <select class="form-control form-select" id="courseList" required></select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">field name</label>
-                            <input type="text" class="form-control" name="lname" id="lname">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Instructor</label>
-                            <input type="text" class="form-control" name="instructor" id="instructor">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class='col-md-6'>
-                        <div class="form-group">
-                            <label class="control-label">Start Time</label>
-                            <div class='input-group date' id='datetimepicker1'>
-                                <input type='datetime' id="startTimetxt" class="form-control" />
-                                <span class="input-group-addon">
-                                    <button class="glyphicon glyphicon-calendar"></button>
-                                </span>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Session Code</label>
+                                <input type="text" class="form-control form-select" id="sessionCode" placeholder="Enter session code here" required />
                             </div>
                         </div>
                     </div>
-                    <div class='col-md-6'>
-                        <div class="form-group">
-                            <label class="control-label">End Time</label>
-                            <div class='input-group date' id='datetimepicker1'>
-                                <input type='datetime' id="endTimetxt" class="form-control" />
-                                <span class="input-group-addon">
-                                    <button class="glyphicon glyphicon-calendar"></button>
-                                </span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Instructor</label>
+                                <input type="text" class="form-control" name="instructor" id="instructor" placeholder="Enter Instructor name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Type of participation</label>
+                                <select class="form-control form-select" id="TypeOfParticipant" required>
+                                    <option>Type of Participation</option>
+                                    <option value="Instructor">Instructor</option>
+                                    <option value="Observer">Observer</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-md-6'>
+                            <div class="form-group">
+                                <label class="control-label">Session Start Time</label>
+                                <div class='input-group date'>
+                                    <input type='datetime-local' id="startTime" class="form-control" />
+                                    @*<span class="input-group-addon">
+                                            <button class="fa-calendar"></button>
+                                        </span>*@
+                                </div>
+                                @*<div class='input-group date' id='datetimepicker1'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class='col-md-6'>
+                            <div class="form-group">
+                                <label class="control-label">Session End Time</label>
+                                <div class='input-group date'>
+                                    <input type='datetime-local' class="form-control" id="endTime" />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btnAdd" class="btn btn-success" data-dismiss="modal">Add</button>
-                <button type="button" id="btnClose" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnAdd" class="btn btn-success" data-dismiss="static">Add</button>
+                    <button type="button" id="btnClose" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
 
+<!-- Add session Modal ends here-->
+<!-- Display cell sessions Modal starts here-->
 
+<div id="cellSessionsdisplayModal" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog">
+    <div>
+        <div class="modal-dialog " role="document">
+            <div class="modal-content modalAdd">
+                <div class="modal-header">
+                    <h6 id="instructorNameModalDisplay" class="modal-title"></h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <h5 class="modal-title instructorNameModalDisplay"></h5>
+                <form id="addSessionForm">
+                    <div class="modal-body ">
+                        <div class="table-responsive-lg">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th scope="col">Session Name</th>
+                                        <th scope="col">Start Time</th>
+                                        <th scope="col">End Time</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-responsive-lg" id="cellSessions">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="viewSessionsbtnClose" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div>
+        @* Edit session Sidebar code *@
+        <div id="editingSidebar" class="EditingSidebar">
 
-
-
-
-
-
+            <h2 class="editingSidebarHeader">Edit selected session</h2>
+            <span class="sessionEditNotification">Session updated!</span>
+            <form class="editingSidebarForm">
+                <div>
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <label class="control-label editingSidebarlabels">Session Code</label>
+                            <input class="form-control editingSidebarFields editSessionCode" id="editSessionCode" required />
+                        </div>
+                    </div>
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <label class="control-label editingSidebarlabels">Session Name</label>
+                            <input class="form-control editingSidebarFields editSessionName" id="editSessionName" required />
+                        </div>
+                    </div>
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <label class="control-label editingSidebarlabels">Session Start Time</label>
+                            <input type="datetime-local" class="form-control editingSidebarFields editStartTime" id="editStartTime" required />
+                        </div>
+                    </div>
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <label class="control-label editingSidebarlabels">Session End Time</label>
+                            <input type="datetime-local" class="form-control editingSidebarFields editEndTime" id="editEndTime" required />
+                        </div>
+                    </div>
+                    @*<div class='col-md-12'>
+                            <div class="form-group">
+                                <label class="control-label editingSidebarlabels">Session Instructor</label>
+                                <input class="form-control editingSidebarFields editInstructor" id="editInstructor" required />
+                            </div>
+                        </div>*@
+                    <div>
+                    </div>
+                    <div>
+                        <button class="btn btn-success btnSaveEdits" data-dismiss="static">Save your changes</button>
+                        <button class="btn btn-danger btnClearEdits" data-dismiss="static">Clear your changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Display cell sessions Modal ends here-->
 
 
 
@@ -135,104 +251,192 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="create">
-    <h1 class="display-4">Calendar section</h1>
-</div>
-
-
-
-
-
-
-<br />
-<br />
-<br />
-
-<p id="testingAjax"></p>
-
-<div class="myCalendar">
-    <div class="currentMonthLabel">
-        <button class="btn btn-block btn-danger">previous month</button>
-        <h1 id="monthLabel">@currentMonth</h1>
-        <button class="btn btn-block btn-primary">next month</button>
-        <button class="modalbtn btn-block" type="button" data-toggle="modal" data-target="#CalModal"><img src="~/Content/Images/plus.png" id="plusSign" title="Add a session" onclick="getInstructorSessions()"/> Add a session</button>
+@*Main Page*@
+<div class="pageContent">
+    <div class="create CalendarTitle">
+        <h1 class="display-4">Calendar section</h1>
+        <div class="currentMonthLabel">
+            <button class="btn btn-block btn-danger">previous month</button>
+            <h1 id="monthLabel">@currentMonth</h1>
+            <button class="btn btn-block btn-primary">next month</button>
+            <button class="modalbtn btn-block" type="button" data-toggle="modal" data-target="#CalModal" id="addSessionbtn"><img src="~/Content/Images/plus.png" id="plusSign" title="Add a session" onclick="getInstructorSessions()" /> Add a session</button>
+        </div>
     </div>
-    <div class="wrapper">
-        <div class="rTable">
-            <div class="rTableHeading">
-                <div class="rTableRow">
-                    <div class="rTableHead instructortblHead sticky-col first-col">
-                        Instructors <span>&#8615;</span>
-                    </div>
-                    @for (var i = 1; i <= numberOfDays; i++)
-                    {
-                        var mydate = $"{i} / {DateTime.Now.Month.ToString()} / {DateTime.Now.ToString("yyyy")}"; //+" 12:00:00 AM"
 
-                        <div class="rTableHead calendarDatesRow">@mydate</div>
+    <br />
+    <br />
+    <br />
+
+    <div class="myCalendar">
+        <div class="wrapper">
+            <div class="rTable">
+                <div class="rTableHeading sticky-header">
+                    <div class="rTableRow">
+                        <div class="CalendarTableHeaders">
+                            <div class="rTableHead instructortblHead sticky-col">
+                                Instructors <span>&#8615;</span>
+                            </div>
+                            @for (var i = 1; i <= numberOfDays; i++)
+                            {
+                                var mydate = $"{i} / {DateTime.Now.Month.ToString()} / {DateTime.Now.ToString("yyyy")}"; //+" 12:00:00 AM"
+
+                                <div class="rTableHead calendarDatesRow  first-row">@mydate</div>
+                            }
+                        </div>
+                    </div>
+
+                    @*<div class="rTableRow" id="instructorNamesCol">
+
+                            <div class="rTableHead instructortblHead sticky-col first-col">
+                                Instructors<br /><span>&#8615;</span>
+                            </div>
+
+                            @for (var i = 1; i <= numberOfDays; i++)
+                            {
+                                <div class="rTableHead calendarDatesRow">@i</div>
+                            }
+
+                        </div>*@
+
+                    @foreach (var emp in Model)
+                    {
+                        <div class="rTableRow" id="instructorNamesCol">
+                            <div class="rTableHead instructorName sticky-col first-col">
+                                @emp.Value.First().FirstName
+                                @emp.Value.First().LastName
+                            </div>
+                            @for (var i = 1; i <= numberOfDays; i++)
+                            {
+                                var count = 0;
+
+                                var FirstDateofMonth = firstDayOfTheMonth.AddDays(i - 1);
+                                <div class="rTableCell">
+                                    @* @{var sessionsForDay = emp.Value.Where(z => (z.StartTime > currentDate && z.StartTime < currentDate.AddDays(1).AddTicks(-1)) || (z.EndTime > currentDate && z.EndTime < currentDate.AddDays(1).AddTicks(-1))).ToList();*@
+                                    <img src="~/Content/Images/plus.png" id="editingSidebarOpen" class="openSessionModal addSessionSymbol" type="button" data-toggle="modal" data-target="#CalModal" data-EmployeeID="@emp.Value.First().EmployeeId" data-instructorName="@emp.Value.First().FirstName @emp.Value.First().LastName" data-date="@FirstDateofMonth" />
+
+                                    <div class="sessionsTimeDisplay">
+                                        @{ foreach (var instructorSession in emp.Value)
+                                            {
+
+                                                if ((instructorSession.StartTime.Day == i) && (instructorSession.StartTime.Month == DateTime.Now.Month))
+                                                {
+                                                    <div class='box' data-sessionstatus="@instructorSession.fk_statusID"></div>
+                                                    <p><strong>@instructorSession.sessionName</strong></p>
+                                                    <p>@(instructorSession.StartTime.ToString("t") + " - " +instructorSession.EndTime.ToString("t"))</p>
+
+                                                    count += 1;
+                                                }
+
+                                            }
+                                        }
+                                    </div>
+                                    @if (count != 0)
+                                    {
+                                        <button class="btn btn-block btn-dark sessionCountbtn" data-toggle="modal" data-target="#cellSessionsdisplayModal" data-EmployeeID="@emp.Value.First().EmployeeId" data-instructorName="@emp.Value.First().FirstName @emp.Value.First().LastName" data-date="@FirstDateofMonth" data-count="@count">@count</button>
+                                    }
+
+                                    @*if (sessionsForDay != null && sessionsForDay.Any())
+                                        {
+                                            <p>@emp.Value.First().sessionName</p>
+                                            <p><strong>Starts at </strong>@emp.Value.First().StartTime.ToString("t")</p>
+                                            <p><strong>Ends at </strong>@emp.Value.First().EndTime.ToString("t")</p>
+                                            foreach (var session in sessionsForDay.Select(s => s.TypeOfParticipation).ToList())
+                                            {
+                                                <p><strong>Role: </strong>@session</p>
+                                            }<br />
+                                        }*@
+
+                                </div>
+                            }
+                        </div>
                     }
                 </div>
-
-                @*<div class="rTableRow" id="instructorNamesCol">
-
-                        <div class="rTableHead instructortblHead sticky-col first-col">
-                            Instructors<br /><span>&#8615;</span>
-                        </div>
-
-                        @for (var i = 1; i <= numberOfDays; i++)
-                        {
-                            <div class="rTableHead calendarDatesRow">@i</div>
-                        }
-
-                    </div>*@
-
-                @foreach (var emp in Model)
-                {
-                    <div class="rTableRow" id="instructorNamesCol">
-                        <div class="rTableHead instructorName sticky-col first-col">
-                            @emp.Value.First().FirstName
-                            @emp.Value.First().LastName
-                        </div>
-                        @for (var i = 0; i < numberOfDays; i++)
-                        {
-                            var currentDate = firstDayOfTheMonth.AddDays(i);
-                            <div class="rTableCell">
-                                @{var sessionsForDay = emp.Value.Where(z => (z.StartTime > currentDate && z.StartTime < currentDate.AddDays(1).AddTicks(-1)) || (z.EndTime > currentDate && z.EndTime < currentDate.AddDays(1).AddTicks(-1))).ToList();
-
-
-                                    if (sessionsForDay != null && sessionsForDay.Any())
-                                    {
-                                        <p>@emp.Value.First().sessionName</p>
-                                        <p><strong>Starts at </strong>@emp.Value.First().StartTime.ToString("t")</p>
-                                        <p><strong>Ends at </strong>@emp.Value.First().EndTime.ToString("t")</p>
-                                        foreach (var session in sessionsForDay.Select(s => s.TypeOfParticipation).ToList())
-                                        {
-                                            <p><strong>Role: </strong>@session</p>
-                                        }<br />
-                                    }
-                                }
-                            </div>
-                        }
-                    </div>
-                }
             </div>
         </div>
     </div>
 </div>
-
-
 <br />
 <br />
 <br />
 
+<script>
+
+    $('.sessionAddNotification').hide();
+    $('.sessionEditNotification').hide();
+    $('.sessionAddFieldNotification').hide();
+
+    $(function () {
+
+        if ($('.box').val($(this).data('sessionstatus')) == 1) {
+            $('.box').css('background-color','red');
+        }
+        else if ($('.box').val($(this).data('sessionstatus')) == 2) {
+            $('.box').css('background-color','yellow');
+        }
+        else {
+            $('.box').css('background-color','green');
+        }
+
+    });
+
+    $(function () {
+
+        $('.openSessionModal').click(function () {
+            $('#instructor').val($(this).data('instructorname'));
+            $('#instructor').attr('data-instructorid', $(this).data('employeeid'));
+            $('#startTime').text(new Date($(this).data('date')));
+            $('#endTime').text($(this).data('date'));
+            //console.log($(this).data('employeeid'));
+            getCourseList();
+            $('#CalModal').show();
+        })
+    });
+
+    $(function () {
+        $(document).on("click", ".sessionCountbtn", function () {
+            @*$('.instructorNameModalDisplay').val($(this).data('instructorname'));
+            $('#startTimeForSession').val($(this).data('date'));*@
+            //testing
+            var empID = $(this).data('employeeid');
+            var date = $(this).data('date');
+            date = date.split(' ')[0];
+            openEditSidebar();
+            $('#instructorNameModalDisplay').text($(this).data('instructorname') + "'s sessions on " + date);
+            getCellSessionList(empID, date);
+            $('#cellSessionsdisplayModal').show();
+        });
+    });
+
+
+    //closes edit sidebar
+    $(function () {
+
+        $('.viewSessionsbtnClose').click(function () {
+            closeEditSidebar();
+        })
+
+        $('.btnClearEdits').click(function () {
+            $('.editingSidebarFields').val('');
+        });
+
+        //$('.btnSaveEdits').click(function () {
+        //    UpdateSession();
+        //    $('.editingSidebarFields').val('');
+        //});
+
+        $(document).on("click", ".btnSaveEdits", function () {
+            UpdateSession();
+            $('.editingSidebarFields').val('');
+        });
+    });
+
+    //$(function () {
+    //    $('.btnSaveEdits').click(function () {
+    //        UpdateSession();
+    //    });
+    //});
+
+    $('#addSessionbtn').click(getCourseList);
+    $('#btnAdd').click(retrieveModalFormData);
+
+</script>

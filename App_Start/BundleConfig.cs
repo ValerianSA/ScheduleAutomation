@@ -22,8 +22,10 @@ namespace ScheduleAutomation
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css"));
+            bundles.Add(new StyleBundle("~/Content/css")
+                .Include("~/Content/bootstrap.css")
+                .Include("~/Content/fonts"));
+            //TODO: add fonts folder to index page (check sources)
         }
     }
 }

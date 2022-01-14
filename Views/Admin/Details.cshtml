@@ -1,0 +1,82 @@
+﻿@model ScheduleAutomation.tblSession
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>tblSession</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.sessionCode)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.sessionCode)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.sessionName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.sessionName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SessionCreationDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SessionCreationDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.sessionStatus)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.sessionStatus)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.tblCours.CourseCode)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.tblCours.CourseCode)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.SessionID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
