@@ -14,12 +14,13 @@ done - When click on edit button then edit sidebar is filled automatically
 done - When click on save changes, update the record in the database
 done - Admin section to see the pending sessions
 done - Signals for the sessions to show what status they are on
-    refresh only grid to display the calendargrid info
+done - get error fixed something around IISExpress
+done - authentications and authorizations login
+    sticky calendar dates row on calendar date header
+    refresh only grid to display the calendargrid info when session is added or updated
     Display only one session on calendar cell
     see all in one go
 
-    get error fixed something around IISExpress - to be done for next week
-    authentications and authorizations login - to be done for next week
 -->
 @*@model IEnumerable<ScheduleAutomation.tblEmployee>*@
 @model SortedDictionary<Guid, List<ScheduleAutomation.Models.EmployeeWithSessionViewModel>>
@@ -273,16 +274,16 @@ done - Signals for the sessions to show what status they are on
         <div class="wrapper">
             <div class="rTable">
                 <div class="rTableHeading sticky-header">
-                    <div class="rTableRow">
+                    <div class="rTableRow" id="instructorNamesCol">
+                        <div class="rTableHead instructortblHead sticky-col  first-colDup">
+                            Instructors <span>&#8615;</span>
+                        </div>
                         <div class="CalendarTableHeaders">
-                            <div class="rTableHead instructortblHead sticky-col">
-                                Instructors <span>&#8615;</span>
-                            </div>
                             @for (var i = 1; i <= numberOfDays; i++)
                             {
                                 var mydate = $"{i} / {DateTime.Now.Month.ToString()} / {DateTime.Now.ToString("yyyy")}"; //+" 12:00:00 AM"
 
-                                <div class="rTableHead calendarDatesRow  first-row">@mydate</div>
+                                <div class="rTableHead calendarDatesRow">@mydate</div>
                             }
                         </div>
                     </div>
@@ -299,9 +300,9 @@ done - Signals for the sessions to show what status they are on
                             }
 
                         </div>*@
-
-                    @foreach (var emp in Model)
-                    {
+                    <div class="calendarDetails">
+                        @foreach (var emp in Model)
+                        {
                         <div class="rTableRow" id="instructorNamesCol">
                             <div class="rTableHead instructorName sticky-col first-col">
                                 @emp.Value.First().FirstName
@@ -312,6 +313,7 @@ done - Signals for the sessions to show what status they are on
                                 var count = 0;
 
                                 var FirstDateofMonth = firstDayOfTheMonth.AddDays(i - 1);
+
                                 <div class="rTableCell">
                                     @* @{var sessionsForDay = emp.Value.Where(z => (z.StartTime > currentDate && z.StartTime < currentDate.AddDays(1).AddTicks(-1)) || (z.EndTime > currentDate && z.EndTime < currentDate.AddDays(1).AddTicks(-1))).ToList();*@
                                     <img src="~/Content/Images/plus.png" id="editingSidebarOpen" class="openSessionModal addSessionSymbol" type="button" data-toggle="modal" data-target="#CalModal" data-EmployeeID="@emp.Value.First().EmployeeId" data-instructorName="@emp.Value.First().FirstName @emp.Value.First().LastName" data-date="@FirstDateofMonth" />
@@ -338,20 +340,21 @@ done - Signals for the sessions to show what status they are on
                                     }
 
                                     @*if (sessionsForDay != null && sessionsForDay.Any())
-                                        {
-                                            <p>@emp.Value.First().sessionName</p>
-                                            <p><strong>Starts at </strong>@emp.Value.First().StartTime.ToString("t")</p>
-                                            <p><strong>Ends at </strong>@emp.Value.First().EndTime.ToString("t")</p>
-                                            foreach (var session in sessionsForDay.Select(s => s.TypeOfParticipation).ToList())
-                                            {
-                                                <p><strong>Role: </strong>@session</p>
-                                            }<br />
-                                        }*@
+                {
+                    <p>@emp.Value.First().sessionName</p>
+                    <p><strong>Starts at </strong>@emp.Value.First().StartTime.ToString("t")</p>
+                    <p><strong>Ends at </strong>@emp.Value.First().EndTime.ToString("t")</p>
+                    foreach (var session in sessionsForDay.Select(s => s.TypeOfParticipation).ToList())
+                    {
+                        <p><strong>Role: </strong>@session</p>
+                    }<br />
+                }*@
 
                                 </div>
                             }
                         </div>
-                    }
+                        }
+                    </div>
                 </div>
             </div>
         </div>

@@ -25,6 +25,7 @@ namespace ScheduleAutomation.Controllers
         private static string constr = ConfigurationManager.ConnectionStrings["Connection_ScheduleAutomationDB"].ConnectionString;
         ScheduleAutomationEntities db = new ScheduleAutomationEntities();
 
+
         #region Get all information from the database
         public static List<EmployeeWithSessionViewModel> GetEmployees()
         {
@@ -93,14 +94,15 @@ namespace ScheduleAutomation.Controllers
         }
         #endregion
 
-        #region
+        #region Get all information to load onto calendar display
         // GET: Calendar
+        //[Authorize(Roles = "superadmin")]
+
         public ActionResult Index()
         {
 
             return View(GetCalendarCellData());
         }
-
         public SortedDictionary<Guid, List<EmployeeWithSessionViewModel>> GetCalendarCellData()
         {
 
@@ -324,6 +326,7 @@ namespace ScheduleAutomation.Controllers
 
         #region Get sessions for a specific cell
         [HttpPost]
+        //[Authorize(Roles = "superadmin")]
         public JsonResult GetCellSessionList(CellSessionListModel model)
         {
 

@@ -353,9 +353,15 @@ textarea {
     color: white;
 }
 
-.rTableCell, .rTableHead {
+.rTableHead {
     display: table-cell;
-    padding: 3px 10px;
+    padding: 3px 11px;
+    border: 1px solid #999999;
+}
+
+.rTableCell {
+    display: table-cell;
+    padding: 3px 11px;
     border: 1px solid #999999;
 }
 
@@ -380,34 +386,37 @@ textarea {
 
 
 .CalendarTitle{
-    top:10;
     position:fixed;
     z-index:1;
     background-color: white;
     width:100%;
+    height:250px;
 }
 
 .CalendarTableHeaders{
     width:100%;
     position:fixed;
     z-index:1;
+    left: 245px;
 }
+
 
 .instructortblHead {
     height: 100px;
-    padding: 35px 20px;
+    padding: 35px 65px;
     text-align: center;
     border: 1px solid #999999;
     background-color: #154a94;
     color: #fff;
     z-index: 1;
-    width: 100px !important;
+    width: 230px !important;
     height: 100px;
+    left: 17px !important;
 }
 
 .calendarDatesRow {
-    height: 5px;
-    padding: 25px 100px;
+    height: 100px;
+    padding: 30px 100px;
     text-align: center;
     border: 1px solid #999999;
     background-color: #154a94;
@@ -438,7 +447,6 @@ textarea {
 
 .instructorName {
     position: relative;
-    /*width: 100%;*/
     width: 100px;
     height: 100px;
     padding: 80px 30px;
@@ -452,6 +460,7 @@ textarea {
     min-width: 100px;
     left: 0px;
 }
+
 
 .rTableCell {
     color: #000;
@@ -482,6 +491,13 @@ textarea {
     min-width: 100px;
     left: 0px;
     /*z-index:1;*/
+}
+
+.first-colDup {
+    width: 100px;
+    min-width: 100px;
+    left: 0px;
+    position: fixed;
 }
 
 .first-row {
