@@ -14,6 +14,7 @@ body {
     padding-bottom: 20px;
     height: 100%;
     margin-top: -40px;
+    zoom:75%;
 }
 
 .bodyContent {
@@ -278,9 +279,7 @@ textarea {
 
 }
 
-#CalModal, #cellSessionsdisplayModal {
-    zoom: 90%;
-}
+
 
 #monthLabel {
     width: 300px;
@@ -292,7 +291,6 @@ textarea {
     margin-top: 170px;
     max-width: 100%;
     left: 0;
-    zoom: 90%;
 }
 
 
@@ -561,12 +559,21 @@ textarea {
     float: left;
     height: 28px;
     width: 8px;
-    margin-bottom: 15px;
     border: 1px solid black;
     clear: both;
 }
 
-
+.instructorRoleBar {
+    float: left;
+    border-radius: 50px;
+    height: 15px;
+    width: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid black;
+    clear: both;
+    z-index: 1;
+}
 
 /*Add session modal styles*/
 #btnAdd, #btnClose {
@@ -704,9 +711,7 @@ body #cellSessionsdisplayModal .modal-dialog {
     margin-top: 20px;
 }
 
-.listOfAdminSessions{
-    zoom:75%;
-}
+
 
 .pendingbtn, .completebtn {
     width: 100%;
@@ -715,9 +720,7 @@ body #cellSessionsdisplayModal .modal-dialog {
     outline: none;
 }
 
-#newPendingsessionupdateModal {
-    zoom:85%;
-}
+
 
 
 

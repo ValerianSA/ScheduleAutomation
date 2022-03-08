@@ -25,7 +25,7 @@ namespace ScheduleAutomation.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
-
+        public int RoleID { get; set; }
     }
 
     [Table("tblCourses")]
@@ -37,6 +37,7 @@ namespace ScheduleAutomation.Models
         public string CourseType { get; set; }
         public string CourseLang { get; set; }
     }
+
 
 
     public class EmployeeWithSessionViewModel: tblEmployeeModel

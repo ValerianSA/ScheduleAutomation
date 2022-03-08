@@ -1,5 +1,58 @@
 ﻿/*const { default: update } = require("./src/methods/update");*/
 
+$(function () {
+
+
+
+
+    var instructorRoleBarValue = $('#instructorRoleBar').text($(this).data('instructorRoleBar'));
+    var sessionStatusBarValue = $('#box').val($(this).data('sessionstatusid'));
+
+
+    switch (sessionStatusBarValue) {
+        case "1":
+            $('#sessionStatusBar').css('background-color', 'red');
+            break;
+        case "2":
+            $('#sessionStatusBar').css('background-color', 'yellow');
+            break;
+        case "3":
+            $('#sessionStatusBar').css('background-color', 'green');
+            break;
+        default:
+            $('#sessionStatusBar').css('background-color', 'blue');
+            console.log(sessionStatusBarValue);
+            break;
+    }
+
+    switch (instructorRoleBarValue) {
+        case "Instructor":
+            $('#instructorRoleBar').css('background-color', 'purple');
+            break;
+        case "Observer":
+            $('#instructorRoleBar').css('background-color', 'yellow');
+            break;
+        default:
+            $('#instructorRoleBar').css('background-color', 'blue');
+            console.log(instructorRoleBarValue);
+            break;
+    }
+
+    //if (sessionStatusBarValue === 1) {
+    //    $('#sessionStatusBar').css('background-color', 'red');
+    //}
+    //else if (sessionStatusBarValue === 2) {
+    //    $('#sessionStatusBar').css('background-color', 'yellow');
+    //}
+    //else {
+    //    $('#sessionStatusBar').css('background-color', 'blue');
+    //}
+});
+
+
+
+
+
 
 function getCourseList() {
 
@@ -17,6 +70,32 @@ function getCourseList() {
                 }
             }
             $("#courseList").html(courseDefault);
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    })
+
+}
+
+
+//Get list of instructors for AddSession form
+function getInstructorList() {
+
+    $.ajax({
+        url: "/Calendar/GetInstructors",
+        method: "GET",
+        success: function (data) {
+
+            var inData = JSON.parse(data);
+            var instructorDefault = '<option value="0">Choose an instructor</option>';
+            //Display course names as a list on modal
+            for (var i = 0; i < inData.length; i++) {
+                if (inData[i].Username != "null") {
+                    instructorDefault += '<option data-instructorid="' + inData[i].Username + '" value="' + inData[i].Username + '">' + inData[i].FirstName + " " + inData[i].LastName + '</option>';
+                }
+            }
+            $("#instructorList").html(instructorDefault);
         },
         error: function (err) {
             console.log(err);
@@ -96,7 +175,7 @@ function getCourseList() {
 //}
 
 
-function retrieveModalFormData() {
+function AddSession() {
 
 
     $('#CalModal').show();
@@ -104,40 +183,38 @@ function retrieveModalFormData() {
     var addSession = new Object();
     addSession.CourseID = $('#courseList').find(':selected').val();
     addSession.sessionCode = $('#sessionCode').val();
-    addSession.Instructor = $('#instructor').val();
+    addSession.Instructor = $('#instructorList').text();
     addSession.TypeOfParticipation = $('#TypeOfParticipant').val();
     addSession.CourseName = $('#courseList').find(':selected').text();
     addSession.StartTime = $('#startTime').val();
+    addSession.empID = $('#instructorList').data("instructorid");
     addSession.EndTime = $('#endTime').val();
-    addSession.empID = $('#instructor').data("instructorid");
+    
+        $.ajax({
 
+            type: "POST",
+            url: "/Calendar/addSession",
+            contentType: 'application/json',
+            data: JSON.stringify(addSession),
+            success: function (response) {
+                Console.log('Session saved!');
+            }
+        })
 
-    $.ajax({
+        //Hide error message
+        $('.sessionAddFieldNotification').fadeOut('fast');
+        //show the session saved notification
+        $('.sessionAddNotification').fadeIn('fast');
+        //autohide the session saved notification
+        setTimeout(function () {
+            $('.sessionAddNotification').fadeOut('fast');
+        }, 5000);
 
-        type: "POST",
-        url: "/Calendar/addSession",
-        contentType: 'application/json',
-        data: JSON.stringify(addSession),
-        success: function (response) {
-            Console.log('Session saved!');
-        }
-    })
-
-    //Hide error message
-    $('.sessionAddFieldNotification').fadeOut('fast');
-    //show the session saved notification
-    $('.sessionAddNotification').fadeIn('fast');
-    //autohide the session saved notification
-    setTimeout(function () {
-        $('.sessionAddNotification').fadeOut('fast');
-    }, 5000);
-
-    //clears form for new session addition
-    //$('#courseList').prop('selectedIndex', 0);
-    //$('#courseList').val("");
-    //$('#sessionCode').val("");
-    //$('#TypeOfParticipant').prop('selectedIndex', 0);
-
+        //clears form for new session addition
+        //$('#courseList').prop('selectedIndex', 0);
+        //$('#courseList').val("");
+        //$('#sessionCode').val("");
+        //$('#TypeOfParticipant').prop('selectedIndex', 0);
 }
 
 

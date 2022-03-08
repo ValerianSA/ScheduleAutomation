@@ -243,7 +243,7 @@ namespace ScheduleAutomation.Controllers
         {
 
             List<tblCoursesModel> courses = new List<tblCoursesModel>();
-            string query = @"  select * from tblCourses ";
+            string query = @"  select * from tblCourses order by CourseName asc";
 
             //string constr = System.Configuration.ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
             //const string constr = @"Data source=L-PC176MXH\SQLEXPRESS;initial catalog=ScheduleAutomation;Integrated Security=SSPI;Pooling=False";
@@ -272,6 +272,48 @@ namespace ScheduleAutomation.Controllers
                         }
                         con.Close();
                         var json = JsonConvert.SerializeObject(courses);
+                        return Json(json, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+
+        }
+        #endregion
+
+        #region Get List of instructors from database
+        public JsonResult GetInstructors ()
+        {
+
+            List<tblEmployeeModel> instructors = new List<tblEmployeeModel>();
+            string query = @"select * from tblEmployees where RoleID = '3' order by FirstName asc";
+
+            //string constr = System.Configuration.ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+            //const string constr = @"Data source=L-PC176MXH\SQLEXPRESS;initial catalog=ScheduleAutomation;Integrated Security=SSPI;Pooling=False";
+
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            var instructor = new tblEmployeeModel
+                            {
+                                Username = sdr["Username"].ToString(),
+                                FirstName = sdr["FirstName"].ToString(),
+                                LastName = sdr["LastName"].ToString(),
+                                EmailAddress = sdr["EmailAddress"].ToString(),
+                                RoleID = int.Parse(sdr["RoleID"].ToString()),
+                            };
+
+                            instructors.Add(instructor);
+
+                        }
+                        con.Close();
+                        var json = JsonConvert.SerializeObject(instructors);
                         return Json(json, JsonRequestBehavior.AllowGet);
                     }
                 }

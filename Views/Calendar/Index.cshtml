@@ -16,10 +16,12 @@ done - Admin section to see the pending sessions
 done - Signals for the sessions to show what status they are on
 done - get error fixed something around IISExpress
 done - authentications and authorizations login
-    sticky calendar dates row on calendar date header
-    refresh only grid to display the calendargrid info when session is added or updated
-    Display only one session on calendar cell
-    see all in one go
+done - see all instructors in a list on add session form
+       Check session status bar
+       Add signal for instructor/observer to calendar
+------ sticky calendar dates row on calendar date header
+       refresh only grid to display the calendargrid info when session is added or updated
+       Display only one session on calendar cell
 
 -->
 @*@model IEnumerable<ScheduleAutomation.tblEmployee>*@
@@ -85,7 +87,8 @@ done - authentications and authorizations login
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label">Instructor</label>
-                                <input type="text" class="form-control" name="instructor" id="instructor" placeholder="Enter Instructor name" required>
+                                @*<input type="text" class="form-control" name="instructor" id="instructor" placeholder="Enter Instructor name" required>*@
+                                <select class="form-control form-select" name="instructor" id="instructorList" required></select>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -324,7 +327,8 @@ done - authentications and authorizations login
 
                                                 if ((instructorSession.StartTime.Day == i) && (instructorSession.StartTime.Month == DateTime.Now.Month))
                                                 {
-                                                    <div class='box' data-sessionstatus="@instructorSession.fk_statusID"></div>
+                                                    <div class='instructorRoleBar' id="instructorRoleBar" data-instructorRoleBar="@instructorSession.TypeOfParticipation" onload="InstructorAndSessionHighlight();"></div>
+                                                    <div class='box' id="sessionStatusBar" data-sessionstatusid="@instructorSession.fk_statusID"  onload="InstructorAndSessionHighlight();"></div>
                                                     <p><strong>@instructorSession.sessionName</strong></p>
                                                     <p>@(instructorSession.StartTime.ToString("t") + " - " +instructorSession.EndTime.ToString("t"))</p>
 
@@ -370,29 +374,17 @@ done - authentications and authorizations login
     $('.sessionEditNotification').hide();
     $('.sessionAddFieldNotification').hide();
 
-    $(function () {
-
-        if ($('.box').val($(this).data('sessionstatus')) == 1) {
-            $('.box').css('background-color','red');
-        }
-        else if ($('.box').val($(this).data('sessionstatus')) == 2) {
-            $('.box').css('background-color','yellow');
-        }
-        else {
-            $('.box').css('background-color','green');
-        }
-
-    });
 
     $(function () {
 
         $('.openSessionModal').click(function () {
-            $('#instructor').val($(this).data('instructorname'));
-            $('#instructor').attr('data-instructorid', $(this).data('employeeid'));
+            $('#instructorList').text($(this).data('instructorname'));
+            $('#instructorList').attr('data-instructorid', $(this).data('employeeid'));
             $('#startTime').text(new Date($(this).data('date')));
             $('#endTime').text($(this).data('date'));
             //console.log($(this).data('employeeid'));
             getCourseList();
+            getInstructorList();
             $('#CalModal').show();
         })
     });
@@ -442,6 +434,7 @@ done - authentications and authorizations login
     //});
 
     $('#addSessionbtn').click(getCourseList);
-    $('#btnAdd').click(retrieveModalFormData);
+    $('#addSessionbtn').click(getInstructorList);
+    $('#btnAdd').click(AddSession);
 
 </script>
