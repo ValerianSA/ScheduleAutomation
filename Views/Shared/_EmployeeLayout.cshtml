@@ -9,8 +9,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="~/Content/Site.css" type="text/css"/>
+    <link rel="stylesheet" href="~/Content/Site.css" type="text/css" />
+    <link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jquery")
     <script type="text/javascript" src="~/Scripts/Script.js"></script>
+
+
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -18,42 +23,49 @@
 <body>
 
 
-        @* Navbar code *@
-        <div id="header" class="navbarHeader">
-            <nav class="myNavbar navbar navbar-static-top">
-                <div class="navbar-nav">
-                    <ul id="navstylelinks">
-                        <li>
-                            <button id="SidebarOpen" class="SidebarOpen" onclick="openNav()">
-                                <span>
-                                    <i id="sidebarRgt" class="fa fa-bars"></i>
-                                </span>
-                            </button>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("index","Home")" id="HomeIcon"><i class="fa fa-fw fa-home"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
+    @* Navbar code *@
+    <div id="header" class="navbarHeader">
+        <nav class="myNavbar navbar navbar-static-top">
+            <div class="navbar-nav">
+                <ul id="navstylelinks">
+                    <li>
+                        <button id="SidebarOpen" class="SidebarOpen" onclick="openNav()">
+                            <span>
+                                <i id="sidebarRgt" class="fa fa-bars"></i>
+                            </span>
+                        </button>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("index","Home")" id="HomeIcon"><i class="fa fa-fw fa-home"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
 
-        @* Sidebar code *@
-        <div id="mySidebar" class="sidebar">
-            <a href="@Url.Action("index","Calendar")" class="Sidebarlink">Home</a>
-            <a href="@Url.Action("index","Employee")" class="Sidebarlink">Employees</a>
-            <a href="@Url.Action("index","Roles")" class="Sidebarlink">Roles</a>
-            <a href="@Url.Action("index","Course")" class="Sidebarlink">Courses</a>
-            <a href="@Url.Action("index","Session")" class="Sidebarlink">Sessions</a>
-
-        </div>
+    @* Sidebar code *@
+    <div id="mySidebar" class="sidebar">
+        <a href="@Url.Action("index","Calendar")" class="Sidebarlink">Home</a>
+        <a href="@Url.Action("index","Employee")" class="Sidebarlink">Employees</a>
+        <a href="@Url.Action("index","Roles")" class="Sidebarlink">Roles</a>
+        <a href="@Url.Action("index","Course")" class="Sidebarlink">Courses</a>
+        <a href="@Url.Action("index","Session")" class="Sidebarlink">Sessions</a>
+        <a href="@Url.Action("index","Admin")" class="Sidebarlink">Administrators</a>
+    </div>
 
     <div class="container container-fluid">
-        
+
         @RenderBody()
 
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>*@
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">*@
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">*@
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
 </body>
 </html>

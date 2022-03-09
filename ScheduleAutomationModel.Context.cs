@@ -30,5 +30,6 @@ namespace ScheduleAutomation
         public virtual DbSet<tblCourses> tblCourses { get; set; }
         public virtual DbSet<tblSession> tblSessions { get; set; }
         public virtual DbSet<tblSessionEmpLink> tblSessionEmpLinks { get; set; }
+        public virtual DbSet<tblSessionStatus> tblSessionStatus1 { get; set; }
     }
 }

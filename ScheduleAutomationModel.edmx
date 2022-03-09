@@ -43,6 +43,9 @@
           <Property Name="StartTime" Type="datetime" />
           <Property Name="EndTime" Type="datetime" />
           <Property Name="CourseID" Type="uniqueidentifier" />
+          <Property Name="SessionCreationDate" Type="datetime" />
+          <Property Name="sessionStatus" Type="varchar" MaxLength="256" />
+          <Property Name="fk_statusID" Type="int" />
         </EntityType>
         <EntityType Name="tblSessionEmpLink">
           <Key>
@@ -52,6 +55,13 @@
           <Property Name="empID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="sessionID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="typeOfParticipation" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblSessionStatus">
+          <Key>
+            <PropertyRef Name="statusID" />
+          </Key>
+          <Property Name="statusID" Type="int" Nullable="false" />
+          <Property Name="statusLabel" Type="varchar" MaxLength="255" />
         </EntityType>
         <Association Name="FK__tblEmploy__RoleI__267ABA7A">
           <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="0..1" />
@@ -74,6 +84,18 @@
             </Principal>
             <Dependent Role="tblSession">
               <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_statusID">
+          <End Role="tblSessionStatus" Type="Self.tblSessionStatus" Multiplicity="0..1" />
+          <End Role="tblSession" Type="Self.tblSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSessionStatus">
+              <PropertyRef Name="statusID" />
+            </Principal>
+            <Dependent Role="tblSession">
+              <PropertyRef Name="fk_statusID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -107,12 +129,17 @@
           <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSession" EntityType="Self.tblSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSessionEmpLink" EntityType="Self.tblSessionEmpLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSessionStatus" EntityType="Self.tblSessionStatus" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__tblEmploy__RoleI__267ABA7A" Association="Self.FK__tblEmploy__RoleI__267ABA7A">
             <End Role="tblRoles" EntitySet="tblRoles" />
             <End Role="tblEmployees" EntitySet="tblEmployees" />
           </AssociationSet>
           <AssociationSet Name="FK__tblSessio__Cours__3A81B327" Association="Self.FK__tblSessio__Cours__3A81B327">
             <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblSession" EntitySet="tblSession" />
+          </AssociationSet>
+          <AssociationSet Name="fk_statusID" Association="Self.fk_statusID">
+            <End Role="tblSessionStatus" EntitySet="tblSessionStatus" />
             <End Role="tblSession" EntitySet="tblSession" />
           </AssociationSet>
           <AssociationSet Name="FK_tblSessionEmpLink_tblEmployees" Association="Self.FK_tblSessionEmpLink_tblEmployees">
@@ -183,6 +210,11 @@
             <End Role="tblSession" EntitySet="tblSessions" />
             <End Role="tblSessionEmpLink" EntitySet="tblSessionEmpLinks" />
           </AssociationSet>
+          <EntitySet Name="tblSessionStatus1" EntityType="ScheduleAutomationModel.tblSessionStatus" />
+          <AssociationSet Name="fk_statusID" Association="ScheduleAutomationModel.fk_statusID">
+            <End Role="tblSessionStatu" EntitySet="tblSessionStatus1" />
+            <End Role="tblSession" EntitySet="tblSessions" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblCourses">
           <Key>
@@ -207,6 +239,10 @@
           <Property Name="CourseID" Type="Guid" />
           <NavigationProperty Name="tblCours" Relationship="ScheduleAutomationModel.FK__tblSessio__Cours__3A81B327" FromRole="tblSession" ToRole="tblCourses" />
           <NavigationProperty Name="tblSessionEmpLinks" Relationship="ScheduleAutomationModel.FK_tblSessionEmpLink_tblSession" FromRole="tblSession" ToRole="tblSessionEmpLink" />
+          <Property Name="SessionCreationDate" Type="DateTime" Precision="3" />
+          <Property Name="sessionStatus" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="fk_statusID" Type="Int32" />
+          <NavigationProperty Name="tblSessionStatu" Relationship="ScheduleAutomationModel.fk_statusID" FromRole="tblSession" ToRole="tblSessionStatu" />
         </EntityType>
         <Association Name="FK__tblSessio__Cours__3A81B327">
           <End Type="ScheduleAutomationModel.tblCourses" Role="tblCourses" Multiplicity="0..1" />
@@ -255,6 +291,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblSessionStatus">
+          <Key>
+            <PropertyRef Name="statusID" />
+          </Key>
+          <Property Name="statusID" Type="Int32" Nullable="false" />
+          <Property Name="statusLabel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblSessions" Relationship="ScheduleAutomationModel.fk_statusID" FromRole="tblSessionStatu" ToRole="tblSession" />
+        </EntityType>
+        <Association Name="fk_statusID">
+          <End Type="ScheduleAutomationModel.tblSessionStatus" Role="tblSessionStatu" Multiplicity="0..1" />
+          <End Type="ScheduleAutomationModel.tblSession" Role="tblSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSessionStatu">
+              <PropertyRef Name="statusID" />
+            </Principal>
+            <Dependent Role="tblSession">
+              <PropertyRef Name="fk_statusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -295,6 +351,9 @@
           <EntitySetMapping Name="tblSessions">
             <EntityTypeMapping TypeName="ScheduleAutomationModel.tblSession">
               <MappingFragment StoreEntitySet="tblSession">
+                <ScalarProperty Name="fk_statusID" ColumnName="fk_statusID" />
+                <ScalarProperty Name="sessionStatus" ColumnName="sessionStatus" />
+                <ScalarProperty Name="SessionCreationDate" ColumnName="SessionCreationDate" />
                 <ScalarProperty Name="CourseID" ColumnName="CourseID" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
@@ -310,6 +369,14 @@
                 <ScalarProperty Name="typeOfParticipation" ColumnName="typeOfParticipation" />
                 <ScalarProperty Name="sessionID" ColumnName="sessionID" />
                 <ScalarProperty Name="empID" ColumnName="empID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSessionStatus1">
+            <EntityTypeMapping TypeName="ScheduleAutomationModel.tblSessionStatus">
+              <MappingFragment StoreEntitySet="tblSessionStatus">
+                <ScalarProperty Name="statusLabel" ColumnName="statusLabel" />
+                <ScalarProperty Name="statusID" ColumnName="statusID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

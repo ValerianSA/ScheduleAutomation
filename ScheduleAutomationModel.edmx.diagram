@@ -4,16 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="98351e8533684c748ca01765ab09d341" Name="Diagram1" ZoomLevel="108">
+      <Diagram DiagramId="98351e8533684c748ca01765ab09d341" Name="Diagram1" ZoomLevel="102">
         <EntityTypeShape EntityType="ScheduleAutomationModel.tblEmployee" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="ScheduleAutomationModel.tblRole" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <AssociationConnector Association="ScheduleAutomationModel.FK__tblEmploy__RoleI__267ABA7A" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ScheduleAutomationModel.tblCourses" Width="1.5" PointX="11.875" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleAutomationModel.tblSession" Width="1.5" PointX="8.625" PointY="1.25" />
+        <EntityTypeShape EntityType="ScheduleAutomationModel.tblSession" Width="2.125" PointX="8.625" PointY="1.25" />
         <AssociationConnector Association="ScheduleAutomationModel.FK__tblSessio__Cours__3A81B327" />
         <EntityTypeShape EntityType="ScheduleAutomationModel.tblSessionEmpLink" Width="1.5" PointX="5.625" PointY="4.625" />
         <AssociationConnector Association="ScheduleAutomationModel.FK_tblSessionEmpLink_tblEmployees" />
         <AssociationConnector Association="ScheduleAutomationModel.FK_tblSessionEmpLink_tblSession" />
+        <EntityTypeShape EntityType="ScheduleAutomationModel.tblSessionStatus" Width="1.5" PointX="0.75" PointY="4.875" />
+        <AssociationConnector Association="ScheduleAutomationModel.fk_statusID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
