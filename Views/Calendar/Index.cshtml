@@ -25,7 +25,6 @@ done - see all instructors in a list on add session form
 
 -->
 @*@model IEnumerable<ScheduleAutomation.tblEmployee>*@
-@model SortedDictionary<Guid, List<ScheduleAutomation.Models.EmployeeWithSessionViewModel>>
 
 @*@{
     var currentDate = Model.First().Key;
@@ -55,7 +54,6 @@ done - see all instructors in a list on add session form
 
 
 <!--Add session Modal starts here-->
-
 <div id="CalModal" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog " role="document">
         <div class="modal-content modalAdd">
@@ -142,7 +140,6 @@ done - see all instructors in a list on add session form
 
 <!-- Add session Modal ends here-->
 <!-- Display cell sessions Modal starts here-->
-
 <div id="cellSessionsdisplayModal" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog">
     <div>
         <div class="modal-dialog " role="document">
@@ -230,41 +227,14 @@ done - see all instructors in a list on add session form
 <!-- Display cell sessions Modal ends here-->
 
 
-
-
-
-
-
-
-@{ // responsible for getting the first and last days of the month
-    var getDate = DateTime.Now;
-    var todayNumb = Convert.ToInt16(getDate.ToString("dd"));
-
-    var firstDayOfTheMonth = new DateTime(getDate.Year, getDate.Month, 1);
-    var firstWeekNow = Convert.ToInt16(getDate.ToString("dd")) + 7;
-    var lastDayOfTheMonth = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
-    var firstWeek = Convert.ToInt16(firstDayOfTheMonth.ToString("dd")) + 7;
-
-    var numberOfDays = Convert.ToInt16(lastDayOfTheMonth.ToString("dd"));
-
-    var currentMonth = DateTime.Now.ToString("MMMM");
-}
-
-
-
-
-
-
-
-
 @*Main Page*@
 <div class="pageContent">
     <div class="create CalendarTitle">
         <h1 class="display-4">Calendar section</h1>
         <div class="currentMonthLabel">
-            <button class="btn btn-block btn-danger">previous month</button>
-            <h1 id="monthLabel">@currentMonth</h1>
-            <button class="btn btn-block btn-primary">next month</button>
+            <button class="btn btn-block btn-danger" onclick="goToPrevMonth()">previous month</button>
+            <h1 id="monthLabel"></h1>
+            <button class="btn btn-block btn-primary" onclick="goToNextMonth()">next month</button>
             <button class="modalbtn btn-block" type="button" data-toggle="modal" data-target="#CalModal" id="addSessionbtn"><img src="~/Content/Images/plus.png" id="plusSign" title="Add a session" onclick="getInstructorSessions()" /> Add a session</button>
         </div>
     </div>
@@ -276,89 +246,8 @@ done - see all instructors in a list on add session form
     <div class="myCalendar">
         <div class="wrapper">
             <div class="rTable">
-                <div class="rTableHeading sticky-header">
-                    <div class="rTableRow" id="instructorNamesCol">
-                        <div class="rTableHead instructortblHead sticky-col  first-colDup">
-                            Instructors <span>&#8615;</span>
-                        </div>
-                        <div class="CalendarTableHeaders">
-                            @for (var i = 1; i <= numberOfDays; i++)
-                            {
-                                var mydate = $"{i} / {DateTime.Now.Month.ToString()} / {DateTime.Now.ToString("yyyy")}"; //+" 12:00:00 AM"
+                <div class="rTableHeading sticky-header" id="partialView">
 
-                                <div class="rTableHead calendarDatesRow">@mydate</div>
-                            }
-                        </div>
-                    </div>
-
-                    @*<div class="rTableRow" id="instructorNamesCol">
-
-                            <div class="rTableHead instructortblHead sticky-col first-col">
-                                Instructors<br /><span>&#8615;</span>
-                            </div>
-
-                            @for (var i = 1; i <= numberOfDays; i++)
-                            {
-                                <div class="rTableHead calendarDatesRow">@i</div>
-                            }
-
-                        </div>*@
-                    <div class="calendarDetails">
-                        @foreach (var emp in Model)
-                        {
-                        <div class="rTableRow" id="instructorNamesCol">
-                            <div class="rTableHead instructorName sticky-col first-col">
-                                @emp.Value.First().FirstName
-                                @emp.Value.First().LastName
-                            </div>
-                            @for (var i = 1; i <= numberOfDays; i++)
-                            {
-                                var count = 0;
-
-                                var FirstDateofMonth = firstDayOfTheMonth.AddDays(i - 1);
-
-                                <div class="rTableCell">
-                                    @* @{var sessionsForDay = emp.Value.Where(z => (z.StartTime > currentDate && z.StartTime < currentDate.AddDays(1).AddTicks(-1)) || (z.EndTime > currentDate && z.EndTime < currentDate.AddDays(1).AddTicks(-1))).ToList();*@
-                                    <img src="~/Content/Images/plus.png" id="editingSidebarOpen" class="openSessionModal addSessionSymbol" type="button" data-toggle="modal" data-target="#CalModal" data-EmployeeID="@emp.Value.First().EmployeeId" data-instructorName="@emp.Value.First().FirstName @emp.Value.First().LastName" data-date="@FirstDateofMonth" />
-
-                                    <div class="sessionsTimeDisplay">
-                                        @{ foreach (var instructorSession in emp.Value)
-                                            {
-
-                                                if ((instructorSession.StartTime.Day == i) && (instructorSession.StartTime.Month == DateTime.Now.Month))
-                                                {
-                                                    <div class='instructorRoleBar' id="instructorRoleBar" data-instructorRoleBar="@instructorSession.TypeOfParticipation" onload="InstructorAndSessionHighlight();"></div>
-                                                    <div class='box' id="sessionStatusBar" data-sessionstatusid="@instructorSession.fk_statusID"  onload="InstructorAndSessionHighlight();"></div>
-                                                    <p><strong>@instructorSession.sessionName</strong></p>
-                                                    <p>@(instructorSession.StartTime.ToString("t") + " - " +instructorSession.EndTime.ToString("t"))</p>
-
-                                                    count += 1;
-                                                }
-
-                                            }
-                                        }
-                                    </div>
-                                    @if (count != 0)
-                                    {
-                                        <button class="btn btn-block btn-dark sessionCountbtn" data-toggle="modal" data-target="#cellSessionsdisplayModal" data-EmployeeID="@emp.Value.First().EmployeeId" data-instructorName="@emp.Value.First().FirstName @emp.Value.First().LastName" data-date="@FirstDateofMonth" data-count="@count">@count</button>
-                                    }
-
-                                    @*if (sessionsForDay != null && sessionsForDay.Any())
-                {
-                    <p>@emp.Value.First().sessionName</p>
-                    <p><strong>Starts at </strong>@emp.Value.First().StartTime.ToString("t")</p>
-                    <p><strong>Ends at </strong>@emp.Value.First().EndTime.ToString("t")</p>
-                    foreach (var session in sessionsForDay.Select(s => s.TypeOfParticipation).ToList())
-                    {
-                        <p><strong>Role: </strong>@session</p>
-                    }<br />
-                }*@
-
-                                </div>
-                            }
-                        </div>
-                        }
-                    </div>
                 </div>
             </div>
         </div>
@@ -373,11 +262,35 @@ done - see all instructors in a list on add session form
     $('.sessionAddNotification').hide();
     $('.sessionEditNotification').hide();
     $('.sessionAddFieldNotification').hide();
+    var currentDate = new Date(); //we'll always start off by current date
 
+    function goToNextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        var url = getURLForCalendarPartial()
+        loadMonthDataAndSetLabel(url);
+    }
+    function goToPrevMonth() {
+        currentDate.setMonth(currentDate.getMonth() -1);
+        var url = getURLForCalendarPartial()
+        loadMonthDataAndSetLabel(url);
+    }
 
+    function getURLForCalendarPartial() {
+        var date = new Date(currentDate);
+        var params = `?year=${date.getFullYear()}&month=${date.getMonth()+1}`; // Will have to be constructed as such, we cant use js in razor code (C#)
+          return '@Url.Action("InnerCalendarViewPartial")' + params;
+    }
+
+    function loadMonthDataAndSetLabel(url) {
+        $('#partialView').load(url);
+        $('#monthLabel').text(currentDate.toLocaleString("en-US", { month: "long" }));
+    }
     $(function () {
-
-        $('.openSessionModal').click(function () {
+        if (currentDate) {
+            var url = getURLForCalendarPartial()
+            loadMonthDataAndSetLabel(url);
+        }
+            $('.openSessionModal').click(function () {
             $('#instructorList').text($(this).data('instructorname'));
             $('#instructorList').attr('data-instructorid', $(this).data('employeeid'));
             $('#startTime').text(new Date($(this).data('date')));
@@ -386,13 +299,13 @@ done - see all instructors in a list on add session form
             getCourseList();
             getInstructorList();
             $('#CalModal').show();
-        })
-    });
+            })
+            });
 
-    $(function () {
-        $(document).on("click", ".sessionCountbtn", function () {
+            $(function () {
+            $(document).on("click", ".sessionCountbtn", function () {
             @*$('.instructorNameModalDisplay').val($(this).data('instructorname'));
-            $('#startTimeForSession').val($(this).data('date'));*@
+                $('#startTimeForSession').val($(this).data('date'));*@
             //testing
             var empID = $(this).data('employeeid');
             var date = $(this).data('date');
@@ -401,40 +314,40 @@ done - see all instructors in a list on add session form
             $('#instructorNameModalDisplay').text($(this).data('instructorname') + "'s sessions on " + date);
             getCellSessionList(empID, date);
             $('#cellSessionsdisplayModal').show();
-        });
-    });
+            });
+            });
 
 
-    //closes edit sidebar
-    $(function () {
+            //closes edit sidebar
+            $(function () {
 
-        $('.viewSessionsbtnClose').click(function () {
+            $('.viewSessionsbtnClose').click(function () {
             closeEditSidebar();
-        })
+            })
 
-        $('.btnClearEdits').click(function () {
+            $('.btnClearEdits').click(function () {
             $('.editingSidebarFields').val('');
-        });
+            });
 
-        //$('.btnSaveEdits').click(function () {
-        //    UpdateSession();
-        //    $('.editingSidebarFields').val('');
-        //});
+            //$('.btnSaveEdits').click(function () {
+            //    UpdateSession();
+            //    $('.editingSidebarFields').val('');
+            //});
 
-        $(document).on("click", ".btnSaveEdits", function () {
+            $(document).on("click", ".btnSaveEdits", function () {
             UpdateSession();
             $('.editingSidebarFields').val('');
-        });
-    });
+            });
+            });
 
-    //$(function () {
-    //    $('.btnSaveEdits').click(function () {
-    //        UpdateSession();
-    //    });
-    //});
+            //$(function () {
+            //    $('.btnSaveEdits').click(function () {
+            //        UpdateSession();
+            //    });
+            //});
 
-    $('#addSessionbtn').click(getCourseList);
-    $('#addSessionbtn').click(getInstructorList);
-    $('#btnAdd').click(AddSession);
+            $('#addSessionbtn').click(getCourseList);
+            $('#addSessionbtn').click(getInstructorList);
+            $('#btnAdd').click(AddSession);
 
 </script>

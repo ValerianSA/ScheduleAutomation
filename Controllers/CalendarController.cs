@@ -1,21 +1,14 @@
 ﻿
 
+using Newtonsoft.Json;
+using ScheduleAutomation.Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using ScheduleAutomation;
-using ScheduleAutomation.Models;
-using System.Dynamic;
 using System.Configuration;
 using System.Data.SqlClient;
-using Newtonsoft.Json;
+using System.Linq;
 using System.Net.Mail;
-using System.Text;
+using System.Web.Mvc;
 
 
 namespace ScheduleAutomation.Controllers
@@ -101,16 +94,35 @@ namespace ScheduleAutomation.Controllers
         public ActionResult Index()
         {
 
-            return View(GetCalendarCellData());
+            return View();
         }
-        public SortedDictionary<Guid, List<EmployeeWithSessionViewModel>> GetCalendarCellData()
+
+        [HttpGet]
+        public ActionResult InnerCalendarViewPartial(int year, int month) // take year as well, due to leap years
+        {
+            var firstDayOfViewedMonth = new DateTime(year, month, 1);
+            var model = new Tuple<SortedDictionary<Guid, List<EmployeeWithSessionViewModel>>, Tuple<int, DateTime>>(GetCalendarCellData(firstDayOfViewedMonth), GetNumberOfDaysForCurrentViewedMonth(year, month));
+          
+            return PartialView(model);
+        }
+
+        private Tuple<int, DateTime> GetNumberOfDaysForCurrentViewedMonth(int year, int month)
+        {
+            var firstDayOfViewedMonth = new DateTime(year, month, 1);
+            var lastDayOfViewedMonth = firstDayOfViewedMonth.AddMonths(1).AddDays(-1);
+
+            return new Tuple<int, DateTime>(Convert.ToInt16($"{lastDayOfViewedMonth:dd}"), firstDayOfViewedMonth);
+        }
+
+
+        public SortedDictionary<Guid, List<EmployeeWithSessionViewModel>> GetCalendarCellData(DateTime dateOfCurrentViewedMonth)
         {
 
             var empData = GetEmployees();
 
             SortedDictionary<Guid, List<EmployeeWithSessionViewModel>> calendarDataPerDay = new SortedDictionary<Guid, List<EmployeeWithSessionViewModel>>();
 
-            var getDate = DateTime.Now;
+            var getDate = dateOfCurrentViewedMonth;
             var todayNumb = Convert.ToInt16(getDate.ToString("dd"));
 
             var firstDayOfTheMonth = new DateTime(getDate.Year, getDate.Month, 1);
@@ -281,7 +293,7 @@ namespace ScheduleAutomation.Controllers
         #endregion
 
         #region Get List of instructors from database
-        public JsonResult GetInstructors ()
+        public JsonResult GetInstructors()
         {
 
             List<tblEmployeeModel> instructors = new List<tblEmployeeModel>();
@@ -380,7 +392,7 @@ namespace ScheduleAutomation.Controllers
             string query = @"select * 
                              from tblSession
                              where SessionID IN (select SessionID from tblSessionEmpLink where empID = '" + model.empID + "' AND StartTime Between'" + startOfDay + "' and '" + endOfDay + "') ";
-            
+
             //string constr = System.Configuration.ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
             //const string constr = @"Data source=L-PC176MXH\SQLEXPRESS;initial catalog=ScheduleAutomation;Integrated Security=SSPI;Pooling=False";
 
@@ -438,10 +450,10 @@ namespace ScheduleAutomation.Controllers
 
             string query = @"UPDATE tblSession 
                              SET sessionCode = '" + updatedSession.sessionCode +
-                             "', sessionName= '" + updatedSession.sessionName + 
-                             "', StartTime='" + updatedSession.StartTime + 
-                             "', EndTime='" + updatedSession.EndTime + 
-                             "', fk_statusID='" + updatedsessionStatus + 
+                             "', sessionName= '" + updatedSession.sessionName +
+                             "', StartTime='" + updatedSession.StartTime +
+                             "', EndTime='" + updatedSession.EndTime +
+                             "', fk_statusID='" + updatedsessionStatus +
                              "' WHERE SessionID = '" + updatedSession.SessionId + "'; ";
 
             try
@@ -549,7 +561,7 @@ namespace ScheduleAutomation.Controllers
                 string borderStyle = "border: 1px solid black;border-style:solid;";
                 string mailBody = "<table style='" + borderStyle + "'>" +
                                   "<tr style='background-color:#10327c;color:#f1f2f2;border: 1px solid black;border-style:solid;'><th>Session ID</th><th>Session Code</th><th>Session Name</th><th>Start time</th><th>End time</th><th>Current status</th></tr>" +
-                                  "<tr style='"+ borderStyle + "'>" +
+                                  "<tr style='" + borderStyle + "'>" +
                                   "<td style='" + borderStyle + "'>" + sessionID + "</td>" +
                                   "<td style='" + borderStyle + "'>" + sessionCode + "</td>" +
                                   "<td style='" + borderStyle + "'>" + sessionName + "</td>" +

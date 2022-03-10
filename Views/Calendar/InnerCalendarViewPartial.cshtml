@@ -1,0 +1,84 @@
+﻿@model Tuple<SortedDictionary<Guid, List<ScheduleAutomation.Models.EmployeeWithSessionViewModel>>, Tuple<int, DateTime>>
+
+
+<div class="rTableRow" id="instructorNamesCol">
+    <div class="rTableHead instructortblHead sticky-col  first-colDup">
+        Instructors <span>&#8615;</span>
+    </div>
+    <div class="CalendarTableHeaders">
+        @for (var i = 1; i <= Model.Item2.Item1; i++)
+        {
+            var mydate = $"{i} / { Model.Item2.Item2.Month.ToString()} / {Model.Item2.Item2.Year.ToString()}"; //+" 12:00:00 AM"
+
+            <div class="rTableHead calendarDatesRow">@mydate</div>
+        }
+    </div>
+</div>
+
+@*<div class="rTableRow" id="instructorNamesCol">
+
+        <div class="rTableHead instructortblHead sticky-col first-col">
+            Instructors<br /><span>&#8615;</span>
+        </div>
+
+        @for (var i = 1; i <= numberOfDays; i++)
+        {
+            <div class="rTableHead calendarDatesRow">@i</div>
+        }
+
+    </div>*@
+<div class="calendarDetails">
+    @foreach (var emp in Model.Item1)
+    {
+        <div class="rTableRow" id="instructorNamesCol">
+            <div class="rTableHead instructorName sticky-col first-col">
+                @emp.Value.First().FirstName
+                @emp.Value.First().LastName
+            </div>
+            @for (var i = 1; i <= Model.Item2.Item1; i++)
+            {
+                var count = 0;
+
+                var FirstDateofMonth = Model.Item2.Item2.AddDays(i - 1);
+
+                <div class="rTableCell">
+                    <img src="~/Content/Images/plus.png" id="editingSidebarOpen" class="openSessionModal addSessionSymbol" type="button" data-toggle="modal" data-target="#CalModal" data-EmployeeID="@emp.Value.First().EmployeeId" data-instructorName="@emp.Value.First().FirstName @emp.Value.First().LastName" data-date="@FirstDateofMonth" />
+
+                    <div class="sessionsTimeDisplay">
+                        @{ foreach (var instructorSession in emp.Value)
+                            {
+
+                                if ((instructorSession.StartTime.Day == i) && (instructorSession.StartTime.Month == Model.Item2.Item2.Month))
+                                {
+                                    <div class='instructorRoleBar' id="instructorRoleBar" data-instructorRoleBar="@instructorSession.TypeOfParticipation" onload="InstructorAndSessionHighlight();"></div>
+                                    <div class='box' id="sessionStatusBar" data-sessionstatusid="@instructorSession.fk_statusID" onload="InstructorAndSessionHighlight();"></div>
+                                    <p><strong>@instructorSession.sessionName</strong></p>
+                                    <p>@(instructorSession.StartTime.ToString("t") + " - " +instructorSession.EndTime.ToString("t"))</p>
+
+                                    count += 1;
+                                }
+
+                            }
+                        }
+                    </div>
+                    @if (count != 0)
+                    {
+                        <button class="btn btn-block btn-dark sessionCountbtn" data-toggle="modal" data-target="#cellSessionsdisplayModal" data-EmployeeID="@emp.Value.First().EmployeeId" data-instructorName="@emp.Value.First().FirstName @emp.Value.First().LastName" data-date="@FirstDateofMonth" data-count="@count">@count</button>
+                    }
+
+                    @*if (sessionsForDay != null && sessionsForDay.Any())
+                        {
+                            <p>@emp.Value.First().sessionName</p>
+                            <p><strong>Starts at </strong>@emp.Value.First().StartTime.ToString("t")</p>
+                            <p><strong>Ends at </strong>@emp.Value.First().EndTime.ToString("t")</p>
+                            foreach (var session in sessionsForDay.Select(s => s.TypeOfParticipation).ToList())
+                            {
+                                <p><strong>Role: </strong>@session</p>
+                            }<br />
+                        }*@
+
+                </div>
+            }
+        </div>
+    }
+</div>
